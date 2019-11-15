@@ -1,4 +1,6 @@
 #pragma once
+#include <windows.h>
+#include <Servprov.h>
 #include "Registro.h"
 #include "Agenda.h"
 
@@ -89,7 +91,8 @@ namespace Proyecto2PrograAvanzada {
 			// 
 			// label2
 			// 
-			this->label2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+			this->label2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((
+				System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->label2->AutoSize = true;

@@ -1,4 +1,6 @@
 #pragma once
+#include <windows.h>
+#include <Servprov.h>
 #include "AgregarEvento.h"
 #include <fstream>
 #include "ListaEventos.h"

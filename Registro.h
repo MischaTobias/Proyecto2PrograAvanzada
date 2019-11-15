@@ -1,4 +1,6 @@
 #pragma
+#include <windows.h>
+#include <Servprov.h>
 #include <fstream>
 #include <string>
 #include <stdlib.h>

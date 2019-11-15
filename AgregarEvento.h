@@ -1,4 +1,6 @@
 #pragma once
+#include <windows.h>
+#include <Servprov.h>
 
 namespace Proyecto2PrograAvanzada {
 
@@ -150,7 +152,7 @@ namespace Proyecto2PrograAvanzada {
 			// txtstartHourWatermark
 			// 
 			this->txtstartHourWatermark->ForeColor = System::Drawing::SystemColors::WindowFrame;
-			this->txtstartHourWatermark->Location = System::Drawing::Point(14, 82);
+			this->txtstartHourWatermark->Location = System::Drawing::Point(12, 82);
 			this->txtstartHourWatermark->Name = L"txtstartHourWatermark";
 			this->txtstartHourWatermark->Size = System::Drawing::Size(177, 20);
 			this->txtstartHourWatermark->TabIndex = 4;
