@@ -325,6 +325,10 @@ private: System::Void btnCambiarCalendario_Click(System::Object^ sender, System:
 private: System::Void btnAgregarTarea_Click(System::Object^ sender, System::EventArgs^ e) {
 	AgregarEvento^ agregarEvento = gcnew AgregarEvento();
 	agregarEvento->Show();
+	agregarEvento->EventoAgregado += gcnew AgregarEvento::EventoAgregadoHandler(this->EventoAgregado);
+}
+private: System::Void EventoAgregado(Object^ sender, NodoEvento* nodo) {
+	lEventos->Insertar(nodo);
 }
 private: System::Void txtCBuscarWatermark_TextChanged(System::Object^ sender, System::EventArgs^ e) {
 	txtCBuscar->Text = txtCBuscarWatermark->Text->Substring(0, 1);

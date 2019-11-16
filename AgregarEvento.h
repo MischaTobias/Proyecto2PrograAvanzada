@@ -1,12 +1,16 @@
 #pragma once
 #include <windows.h>
 #include <Servprov.h>
+#include "NodoEvento.h"
+#include "Actividad.h"
+#include "Recordatorio.h"
+#include "Alarma.h"
 
 namespace Proyecto2PrograAvanzada {
 
 	using namespace System;
 	using namespace System::ComponentModel;
-	using namespace System::Collections;
+	using namespace System::Collections::Generic;
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
@@ -16,6 +20,10 @@ namespace Proyecto2PrograAvanzada {
 	/// </summary>
 	public ref class AgregarEvento : public System::Windows::Forms::Form
 	{
+
+	public:
+		delegate void EventoAgregadoHandler(Object^ sender, NodoEvento* nodo);
+		event EventoAgregadoHandler^ EventoAgregado;
 	public:
 		AgregarEvento(void)
 		{
@@ -64,6 +72,7 @@ namespace Proyecto2PrograAvanzada {
 	private: System::Windows::Forms::Label^ label9;
 	private: System::Windows::Forms::RichTextBox^ rtbMaterials;
 	private: System::Windows::Forms::RichTextBox^ rtbMaterialsWatermark;
+	private: System::Windows::Forms::Button^ btnAgregarEvento;
 
 
 
@@ -105,6 +114,7 @@ namespace Proyecto2PrograAvanzada {
 			this->label9 = (gcnew System::Windows::Forms::Label());
 			this->rtbMaterials = (gcnew System::Windows::Forms::RichTextBox());
 			this->rtbMaterialsWatermark = (gcnew System::Windows::Forms::RichTextBox());
+			this->btnAgregarEvento = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// cbEvents
@@ -373,11 +383,25 @@ namespace Proyecto2PrograAvanzada {
 			this->rtbMaterialsWatermark->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &AgregarEvento::rtbMaterialsWatermark_MouseClick);
 			this->rtbMaterialsWatermark->TextChanged += gcnew System::EventHandler(this, &AgregarEvento::rtbMaterialsWatermark_TextChanged);
 			// 
+			// btnAgregarEvento
+			// 
+			this->btnAgregarEvento->BackColor = System::Drawing::Color::Gainsboro;
+			this->btnAgregarEvento->Location = System::Drawing::Point(12, 343);
+			this->btnAgregarEvento->Name = L"btnAgregarEvento";
+			this->btnAgregarEvento->Size = System::Drawing::Size(177, 35);
+			this->btnAgregarEvento->TabIndex = 25;
+			this->btnAgregarEvento->Text = L"Agregar Evento";
+			this->btnAgregarEvento->UseVisualStyleBackColor = false;
+			this->btnAgregarEvento->Click += gcnew System::EventHandler(this, &AgregarEvento::btnAgregarEvento_Click);
+			this->btnAgregarEvento->MouseEnter += gcnew System::EventHandler(this, &AgregarEvento::btnAgregarEvento_MouseEnter);
+			this->btnAgregarEvento->MouseLeave += gcnew System::EventHandler(this, &AgregarEvento::btnAgregarEvento_MouseLeave);
+			// 
 			// AgregarEvento
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(652, 456);
+			this->ClientSize = System::Drawing::Size(469, 401);
+			this->Controls->Add(this->btnAgregarEvento);
 			this->Controls->Add(this->rtbMaterialsWatermark);
 			this->Controls->Add(this->rtbMaterials);
 			this->Controls->Add(this->label9);
@@ -567,6 +591,20 @@ private: System::Void cbEvents_SelectedIndexChanged(System::Object^ sender, Syst
 		txtInvolvedPeopleWatermark->Enabled = false;
 		rtbMaterialsWatermark->Enabled = false;
 	}
+}
+private: System::Void btnAgregarEvento_MouseEnter(System::Object^ sender, System::EventArgs^ e) {
+	btnAgregarEvento->BackColor = BackColor.White;
+}
+private: System::Void btnAgregarEvento_MouseLeave(System::Object^ sender, System::EventArgs^ e) {
+	btnAgregarEvento->BackColor = BackColor.Gainsboro;
+}
+
+//Agregar un evento
+private: System::Void btnAgregarEvento_Click(System::Object^ sender, System::EventArgs^ e) {
+	//switch ()
+	//{
+
+	//}
 }
 };
 }
