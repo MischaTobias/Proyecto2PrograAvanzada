@@ -37,6 +37,14 @@ namespace Proyecto2PrograAvanzada {
 		AgregarEvento(String^ date)
 		{
 			fecha = date;
+			if (fecha->Length == 19)
+			{
+				fecha = fecha->Remove(10, 9);
+			}
+			else
+			{
+				fecha = fecha->Remove(9, 9);
+			}
 			InitializeComponent();
 		}
 
@@ -605,32 +613,31 @@ private: System::Void btnAgregarEvento_MouseEnter(System::Object^ sender, System
 private: System::Void btnAgregarEvento_MouseLeave(System::Object^ sender, System::EventArgs^ e) {
 	btnAgregarEvento->BackColor = BackColor.Gainsboro;
 }
-
 //Agregar un evento
 private: System::Void btnAgregarEvento_Click(System::Object^ sender, System::EventArgs^ e) {
+	NodoEvento* newEvento;
 	if (!(txtstartHour->Text == "" || rtbDescription->Text == "" || txtIdentifier->Text == ""))
 	{
-		if (ComboBoxSelected())
+		if (ValidInfo())
 		{
 			switch (cbEvents->SelectedIndex)
 			{
 			case 0:
-				if (txtendHour->Text == "" || txtmeetingPlace->Text == "" || rtbMaterials->Text == "")
-				{
-					MessageBox::Show("Por favor ingrese datos válidos en todos los campos del formulario");
-				}
-				else
-				{
-					AgregarActividad();
-					this->Close();
-				}
+				newEvento = new NodoEvento(AgregarActividad());
+				lEventos->Insertar(newEvento);
+				MessageBox::Show("Su evento se ha guardado con éxito");
+				this->Close();
 				break;
 			case 1:
-				AgregarRecordatorio();
+				newEvento = new NodoEvento(AgregarRecordatorio());
+				lEventos->Insertar(newEvento);
+				MessageBox::Show("Su evento se ha guardado con éxito");
 				this->Close();
 				break;
 			case 2:
-				AgregarAlarma();
+				newEvento = new NodoEvento(AgregarRecordatorio());
+				lEventos->Insertar(newEvento);
+				MessageBox::Show("Su evento se ha guardado con éxito");
 				this->Close();
 				break;
 			}
@@ -645,14 +652,51 @@ private: System::Void btnAgregarEvento_Click(System::Object^ sender, System::Eve
 		MessageBox::Show("Por favor ingrese datos válidos en todos los campos del formulario");
 	}
 }
-private: System::Boolean ComboBoxSelected() {
-	if (cbEvents->SelectedIndex == -1 || cbPriority->SelectedIndex == -1)
+private: System::Boolean ValidInfo() {
+	if (cbEvents->SelectedIndex == -1 || cbPriority->SelectedIndex == -1 || txtstartHour->Text == "" || rtbDescription->Text == "" || txtIdentifier->Text == "")
 	{
 		return false;
 	}
 	else
 	{
-		return true;
+		if (cbEvents->SelectedIndex == 0)
+		{
+			if (txtendHour->Text == "" || txtmeetingPlace->Text == "" || rtbMaterials->Text == "")
+			{
+				return false;
+			}
+			else
+			{
+				array<String^>^ hora = txtstartHour->Text->Split(':');
+				array<String^>^ hora2 = txtendHour->Text->Split(':');
+				try
+				{
+					int x = System::Convert::ToInt16(hora[0]);
+					int y = System::Convert::ToInt16(hora[1]);
+					int w = System::Convert::ToInt16(hora2[0]);
+					int z = System::Convert::ToInt16(hora2[1]);
+					return true;
+				}
+				catch (...)
+				{
+					return false;
+				}
+			}
+		}
+		else
+		{
+			array<String^>^ hora = txtstartHour->Text->Split(':');
+			try
+			{
+				int x = System::Convert::ToInt16(hora[0]);
+				int y = System::Convert::ToInt16(hora[1]);
+				return true;
+			}
+			catch (...)
+			{
+				return false;
+			}
+		}
 	}
 }
 private: Actividad* AgregarActividad() {
@@ -665,8 +709,24 @@ private: Actividad* AgregarActividad() {
 	std::string nmaterials = context.marshal_as<std::string>(rtbMaterials->Text);
 	std::string desc = context.marshal_as<std::string>(rtbDescription->Text);
 	std::string id = context.marshal_as<std::string>(txtIdentifier->Text);
-	int priority = cbPriority->SelectedIndex + 1;
-	Actividad* actividad = new Actividad(f, hstart, hend, mplace, ipeople, nmaterials, desc, id, priority);
+	int pnum = cbPriority->SelectedIndex + 1;
+	std::string priority = "";
+	switch (pnum)
+	{
+	case 1:
+		priority = "Muy alta";
+		break;
+	case 2:
+		priority = "Alta";
+		break;
+	case 3:
+		priority = "Media";
+		break;
+	case 4:
+		priority = "Baja";
+		break;
+	}
+	Actividad* actividad = new Actividad(f, hstart, hend, mplace, ipeople, nmaterials, desc, id, priority, pnum);
 	return actividad;
 }
 private: Recordatorio* AgregarRecordatorio() {
@@ -675,8 +735,24 @@ private: Recordatorio* AgregarRecordatorio() {
 	std::string hstart = context.marshal_as<std::string>(txtstartHour->Text);
 	std::string desc = context.marshal_as<std::string>(rtbDescription->Text);
 	std::string id = context.marshal_as<std::string>(txtIdentifier->Text);
-	int priority = cbPriority->SelectedIndex + 1;
-	Recordatorio* recordatorio = new Recordatorio(f, hstart, desc, id, priority);
+	int pnum = cbPriority->SelectedIndex + 1;
+	std::string priority = "";
+	switch (pnum)
+	{
+	case 1:
+		priority = "Muy alta";
+		break;
+	case 2:
+		priority = "Alta";
+		break;
+	case 3:
+		priority = "Media";
+		break;
+	case 4:
+		priority = "Baja";
+		break;
+	}
+	Recordatorio* recordatorio = new Recordatorio(f, hstart, desc, id, priority, pnum);
 	return recordatorio;
 }
 private: Alarma* AgregarAlarma() {
@@ -685,8 +761,24 @@ private: Alarma* AgregarAlarma() {
 	std::string hstart = context.marshal_as<std::string>(txtstartHour->Text);
 	std::string desc = context.marshal_as<std::string>(rtbDescription->Text);
 	std::string id = context.marshal_as<std::string>(txtIdentifier->Text);
-	int priority = cbPriority->SelectedIndex + 1;
-	Alarma* alarma = new Alarma(f, hstart, desc, id, priority);
+	int pnum = cbPriority->SelectedIndex + 1;
+	std::string priority = "";
+	switch (pnum)
+	{
+	case 1:
+		priority = "Muy alta";
+		break;
+	case 2:
+		priority = "Alta";
+		break;
+	case 3:
+		priority = "Media";
+		break;
+	case 4:
+		priority = "Baja";
+		break;
+	}
+	Alarma* alarma = new Alarma(f, hstart, desc, id, priority, pnum);
 	return alarma;
 }
 };

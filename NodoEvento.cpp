@@ -25,16 +25,16 @@ NodoEvento::NodoEvento() {
 }
 
 int NodoEvento::Priority() {
-	if (actividad->priority != -1)
+	if (actividad->pnum != -1)
 	{
-		return actividad->priority;
+		return actividad->pnum;
 	}
-	else if (recordatorio->priority != -1)
+	else if (recordatorio->pnum != -1)
 	{
-		return recordatorio->priority;
+		return recordatorio->pnum;
 	}
 	else
 	{
-		return alarma->priority;
+		return alarma->pnum;
 	}
 }

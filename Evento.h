@@ -8,7 +8,8 @@ public:
 	std::string fecha;
 	std::string description;
 	std::string identifier;
-	int priority;
+	std::string priority;
+	int pnum;
 	virtual void ItsTime() {};
 };
 
