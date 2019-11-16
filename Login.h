@@ -3,6 +3,7 @@
 #include <Servprov.h>
 #include "Registro.h"
 #include "Agenda.h"
+#include "ListaEventos.h"
 
 namespace Proyecto2PrograAvanzada {
 
@@ -14,6 +15,9 @@ namespace Proyecto2PrograAvanzada {
 	using namespace System::Drawing;
 	using namespace System::IO;
 
+
+	ListaEventos* lEventos;
+
 	/// <summary>
 	/// Resumen de Login
 	/// </summary>
@@ -22,6 +26,7 @@ namespace Proyecto2PrograAvanzada {
 	public:
 		Login(void)
 		{
+			lEventos = new ListaEventos();
 			InitializeComponent();
 			//
 			//TODO: agregar código de constructor aquí
@@ -51,7 +56,7 @@ namespace Proyecto2PrograAvanzada {
 		/// <summary>
 		/// Variable del diseñador necesaria.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+		System::ComponentModel::Container^ components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -163,57 +168,57 @@ namespace Proyecto2PrograAvanzada {
 
 		}
 #pragma endregion
-private: System::Void btnLogin_MouseEnter(System::Object^ sender, System::EventArgs^ e) {
-	btnLogin->BackColor = BackColor.White;
-}
-private: System::Void btnLogin_MouseLeave(System::Object^ sender, System::EventArgs^ e) {
-	btnLogin->BackColor = BackColor.Gainsboro;
-}
-private: System::Void lblRegistrar_MouseEnter(System::Object^ sender, System::EventArgs^ e) {
-	lblRegistrar->ForeColor = ForeColor.RoyalBlue;
-}
-private: System::Void lblRegistrar_MouseLeave(System::Object^ sender, System::EventArgs^ e) {
-	lblRegistrar->ForeColor = ForeColor.MediumBlue;
-}
-private: System::Void btnLogin_Click(System::Object^ sender, System::EventArgs^ e) {
-	if (Existe(txtUsuario->Text, txtPass->Text))
-	{
-		Agenda^ agenda = gcnew Agenda(txtUsuario->Text);
-		agenda->Show();
-		this->Hide();
+	private: System::Void btnLogin_MouseEnter(System::Object^ sender, System::EventArgs^ e) {
+		btnLogin->BackColor = BackColor.White;
 	}
-	else
-	{
-		System::Windows::Forms::MessageBox::Show("Ingrese un usuario y contraseña válidos");
+	private: System::Void btnLogin_MouseLeave(System::Object^ sender, System::EventArgs^ e) {
+		btnLogin->BackColor = BackColor.Gainsboro;
 	}
-}
-private: System::Boolean Existe(String^ usuario, String^ pass) {
-	StreamReader^ streamReader = gcnew StreamReader("Users.csv");
-	System::String^ contenido = streamReader->ReadToEnd();
-	streamReader->Close();
-	array<String^>^ usuarios = contenido->Split('\r');
-	array<String^>^ usuarioypass;
-	for (int i = 0; i < usuarios->Length; i++)
-	{
-		usuarioypass = usuarios[i]->Split(',');
-		if (usuarioypass[0][0] == '\n')
+	private: System::Void lblRegistrar_MouseEnter(System::Object^ sender, System::EventArgs^ e) {
+		lblRegistrar->ForeColor = ForeColor.RoyalBlue;
+	}
+	private: System::Void lblRegistrar_MouseLeave(System::Object^ sender, System::EventArgs^ e) {
+		lblRegistrar->ForeColor = ForeColor.MediumBlue;
+	}
+	private: System::Void btnLogin_Click(System::Object^ sender, System::EventArgs^ e) {
+		if (Existe(txtUsuario->Text, txtPass->Text))
 		{
-			usuarioypass[0] = usuarioypass[0]->Remove(0, 1);
+			Agenda^ agenda = gcnew Agenda(txtUsuario->Text);
+			agenda->Show();
+			this->Hide();
 		}
-		if (usuario == usuarioypass[0])
+		else
 		{
-			if (pass == usuarioypass[1])
+			System::Windows::Forms::MessageBox::Show("Ingrese un usuario y contraseña válidos");
+		}
+	}
+	private: System::Boolean Existe(String^ usuario, String^ pass) {
+		StreamReader^ streamReader = gcnew StreamReader("Users.csv");
+		System::String^ contenido = streamReader->ReadToEnd();
+		streamReader->Close();
+		array<String^>^ usuarios = contenido->Split('\r');
+		array<String^>^ usuarioypass;
+		for (int i = 0; i < usuarios->Length; i++)
+		{
+			usuarioypass = usuarios[i]->Split(',');
+			if (usuarioypass[0][0] == '\n')
 			{
-				return true;
+				usuarioypass[0] = usuarioypass[0]->Remove(0, 1);
+			}
+			if (usuario == usuarioypass[0])
+			{
+				if (pass == usuarioypass[1])
+				{
+					return true;
+				}
 			}
 		}
-	}
-	return false;
+		return false;
 
-}
-private: System::Void lblRegistrar_Click(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void lblRegistrar_Click(System::Object^ sender, System::EventArgs^ e) {
 		Registro^ registro = gcnew Registro();
 		registro->Show();
-}
-};
+	}
+	};
 }

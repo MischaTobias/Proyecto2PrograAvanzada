@@ -5,6 +5,8 @@
 #include "Actividad.h"
 #include "Recordatorio.h"
 #include "Alarma.h"
+#include "ListaEventos.h"
+#include <msclr\marshal_cppstd.h>
 
 namespace Proyecto2PrograAvanzada {
 
@@ -15,15 +17,14 @@ namespace Proyecto2PrograAvanzada {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
+	extern ListaEventos* lEventos;
+
 	/// <summary>
 	/// Resumen de AgregarEvento
 	/// </summary>
 	public ref class AgregarEvento : public System::Windows::Forms::Form
 	{
-
-	public:
-		delegate void EventoAgregadoHandler(Object^ sender, NodoEvento* nodo);
-		event EventoAgregadoHandler^ EventoAgregado;
+		String^ fecha;
 	public:
 		AgregarEvento(void)
 		{
@@ -31,6 +32,12 @@ namespace Proyecto2PrograAvanzada {
 			//
 			//TODO: agregar código de constructor aquí
 			//
+		}
+
+		AgregarEvento(String^ date)
+		{
+			fecha = date;
+			InitializeComponent();
 		}
 
 	protected:
@@ -162,7 +169,7 @@ namespace Proyecto2PrograAvanzada {
 			// txtstartHourWatermark
 			// 
 			this->txtstartHourWatermark->ForeColor = System::Drawing::SystemColors::WindowFrame;
-			this->txtstartHourWatermark->Location = System::Drawing::Point(12, 82);
+			this->txtstartHourWatermark->Location = System::Drawing::Point(14, 82);
 			this->txtstartHourWatermark->Name = L"txtstartHourWatermark";
 			this->txtstartHourWatermark->Size = System::Drawing::Size(177, 20);
 			this->txtstartHourWatermark->TabIndex = 4;
@@ -601,10 +608,86 @@ private: System::Void btnAgregarEvento_MouseLeave(System::Object^ sender, System
 
 //Agregar un evento
 private: System::Void btnAgregarEvento_Click(System::Object^ sender, System::EventArgs^ e) {
-	//switch ()
-	//{
-
-	//}
+	if (!(txtstartHour->Text == "" || rtbDescription->Text == "" || txtIdentifier->Text == ""))
+	{
+		if (ComboBoxSelected())
+		{
+			switch (cbEvents->SelectedIndex)
+			{
+			case 0:
+				if (txtendHour->Text == "" || txtmeetingPlace->Text == "" || rtbMaterials->Text == "")
+				{
+					MessageBox::Show("Por favor ingrese datos válidos en todos los campos del formulario");
+				}
+				else
+				{
+					AgregarActividad();
+					this->Close();
+				}
+				break;
+			case 1:
+				AgregarRecordatorio();
+				this->Close();
+				break;
+			case 2:
+				AgregarAlarma();
+				this->Close();
+				break;
+			}
+		}
+		else
+		{
+			MessageBox::Show("Por favor ingrese datos válidos en todos los campos del formulario");
+		}
+	}
+	else
+	{
+		MessageBox::Show("Por favor ingrese datos válidos en todos los campos del formulario");
+	}
+}
+private: System::Boolean ComboBoxSelected() {
+	if (cbEvents->SelectedIndex == -1 || cbPriority->SelectedIndex == -1)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+private: Actividad* AgregarActividad() {
+	msclr::interop::marshal_context context;
+	std::string f = context.marshal_as<std::string>(fecha);
+	std::string hstart = context.marshal_as<std::string>(txtstartHour->Text);
+	std::string hend = context.marshal_as<std::string>(txtendHour->Text);
+	std::string mplace = context.marshal_as<std::string>(txtmeetingPlace->Text);
+	std::string ipeople = context.marshal_as<std::string>(txtInvolvedPeople->Text);
+	std::string nmaterials = context.marshal_as<std::string>(rtbMaterials->Text);
+	std::string desc = context.marshal_as<std::string>(rtbDescription->Text);
+	std::string id = context.marshal_as<std::string>(txtIdentifier->Text);
+	int priority = cbPriority->SelectedIndex + 1;
+	Actividad* actividad = new Actividad(f, hstart, hend, mplace, ipeople, nmaterials, desc, id, priority);
+	return actividad;
+}
+private: Recordatorio* AgregarRecordatorio() {
+	msclr::interop::marshal_context context;
+	std::string f = context.marshal_as<std::string>(fecha);
+	std::string hstart = context.marshal_as<std::string>(txtstartHour->Text);
+	std::string desc = context.marshal_as<std::string>(rtbDescription->Text);
+	std::string id = context.marshal_as<std::string>(txtIdentifier->Text);
+	int priority = cbPriority->SelectedIndex + 1;
+	Recordatorio* recordatorio = new Recordatorio(f, hstart, desc, id, priority);
+	return recordatorio;
+}
+private: Alarma* AgregarAlarma() {
+	msclr::interop::marshal_context context;
+	std::string f = context.marshal_as<std::string>(fecha);
+	std::string hstart = context.marshal_as<std::string>(txtstartHour->Text);
+	std::string desc = context.marshal_as<std::string>(rtbDescription->Text);
+	std::string id = context.marshal_as<std::string>(txtIdentifier->Text);
+	int priority = cbPriority->SelectedIndex + 1;
+	Alarma* alarma = new Alarma(f, hstart, desc, id, priority);
+	return alarma;
 }
 };
 }

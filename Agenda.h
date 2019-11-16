@@ -19,13 +19,13 @@ namespace Proyecto2PrograAvanzada {
 	using namespace System::Drawing;
 	using namespace System::IO;
 
+	extern ListaEventos* lEventos;
 	/// <summary>
 	/// Resumen de Agenda
 	/// </summary>
 	public ref class Agenda : public System::Windows::Forms::Form
 	{
 		String^ userActual;
-		ListaEventos* lEventos;
 	public:
 		Agenda(String^ user)
 		{
@@ -37,7 +37,7 @@ namespace Proyecto2PrograAvanzada {
 			//
 		}
 		//Constructor
-		Agenda(void) 
+		Agenda(void)
 		{
 			InitializeComponent();
 		}
@@ -63,7 +63,7 @@ namespace Proyecto2PrograAvanzada {
 	private: System::Windows::Forms::RichTextBox^ rtbEventos;
 	private: System::Windows::Forms::Button^ btnCambiarCalendario;
 	private: System::Windows::Forms::MonthCalendar^ mCalendar;
-	private: System::Windows::Forms::Button^ btnImportarAgenda;
+
 	private: System::Windows::Forms::Button^ btnExportarAgenda;
 	private: System::Windows::Forms::Button^ btnBuscarTarea;
 	private: System::Windows::Forms::ComboBox^ cbCBuscar;
@@ -74,7 +74,7 @@ namespace Proyecto2PrograAvanzada {
 		/// <summary>
 		/// Variable del diseñador necesaria.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+		System::ComponentModel::Container^ components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -92,7 +92,6 @@ namespace Proyecto2PrograAvanzada {
 			this->rtbEventos = (gcnew System::Windows::Forms::RichTextBox());
 			this->btnCambiarCalendario = (gcnew System::Windows::Forms::Button());
 			this->mCalendar = (gcnew System::Windows::Forms::MonthCalendar());
-			this->btnImportarAgenda = (gcnew System::Windows::Forms::Button());
 			this->btnExportarAgenda = (gcnew System::Windows::Forms::Button());
 			this->btnBuscarTarea = (gcnew System::Windows::Forms::Button());
 			this->cbCBuscar = (gcnew System::Windows::Forms::ComboBox());
@@ -189,22 +188,11 @@ namespace Proyecto2PrograAvanzada {
 			this->mCalendar->TabIndex = 9;
 			this->mCalendar->DateSelected += gcnew System::Windows::Forms::DateRangeEventHandler(this, &Agenda::mCalendar_DateSelected);
 			// 
-			// btnImportarAgenda
-			// 
-			this->btnImportarAgenda->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->btnImportarAgenda->Location = System::Drawing::Point(302, 206);
-			this->btnImportarAgenda->Name = L"btnImportarAgenda";
-			this->btnImportarAgenda->Size = System::Drawing::Size(122, 25);
-			this->btnImportarAgenda->TabIndex = 10;
-			this->btnImportarAgenda->Text = L"Importar Agenda";
-			this->btnImportarAgenda->UseVisualStyleBackColor = true;
-			// 
 			// btnExportarAgenda
 			// 
 			this->btnExportarAgenda->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->btnExportarAgenda->Location = System::Drawing::Point(465, 206);
+			this->btnExportarAgenda->Location = System::Drawing::Point(303, 210);
 			this->btnExportarAgenda->Name = L"btnExportarAgenda";
 			this->btnExportarAgenda->Size = System::Drawing::Size(122, 25);
 			this->btnExportarAgenda->TabIndex = 11;
@@ -276,7 +264,6 @@ namespace Proyecto2PrograAvanzada {
 			this->Controls->Add(this->cbCBuscar);
 			this->Controls->Add(this->btnBuscarTarea);
 			this->Controls->Add(this->btnExportarAgenda);
-			this->Controls->Add(this->btnImportarAgenda);
 			this->Controls->Add(this->mCalendar);
 			this->Controls->Add(this->btnCambiarCalendario);
 			this->Controls->Add(this->rtbEventos);
@@ -289,6 +276,7 @@ namespace Proyecto2PrograAvanzada {
 			this->Name = L"Agenda";
 			this->Text = L"Agenda";
 			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &Agenda::Agenda_FormClosed);
+			this->Load += gcnew System::EventHandler(this, &Agenda::Agenda_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -296,8 +284,9 @@ namespace Proyecto2PrograAvanzada {
 #pragma endregion
 		bool bisiesto = 0;
 		int year, month, days;
-private: System::Void Agenda_FormClosed(System::Object^ sender, System::Windows::Forms::FormClosedEventArgs^ e) {
-		for (int i = Application::OpenForms->Count; i >= 0 ; i--)
+		AgregarEvento^ agregarEvento;
+	private: System::Void Agenda_FormClosed(System::Object^ sender, System::Windows::Forms::FormClosedEventArgs^ e) {
+		for (int i = Application::OpenForms->Count; i >= 0; i--)
 		{
 			try
 			{
@@ -305,122 +294,142 @@ private: System::Void Agenda_FormClosed(System::Object^ sender, System::Windows:
 			}
 			catch (...)
 			{
-					
+
 			}
 		}
 	}
-private: System::Void btnCambiarCalendario_Click(System::Object^ sender, System::EventArgs^ e) {
-	try
-	{
-		year = System::Convert::ToInt16(txtYear->Text);
-		month = System::Convert::ToInt16(txtMonth->Text);
-		DateTime date = System::Convert::ToDateTime("01/" + txtMonth->Text + "/" + txtYear->Text);
-		mCalendar->SetDate(date);
+	private: System::Void btnCambiarCalendario_Click(System::Object^ sender, System::EventArgs^ e) {
+		try
+		{
+			year = System::Convert::ToInt16(txtYear->Text);
+			month = System::Convert::ToInt16(txtMonth->Text);
+			DateTime date = System::Convert::ToDateTime("01/" + txtMonth->Text + "/" + txtYear->Text);
+			mCalendar->SetDate(date);
+		}
+		catch (...)
+		{
+			System::Windows::Forms::MessageBox::Show("Por favor ingrese datos válidos en el año y el mes");
+		}
 	}
-	catch (...)
-	{
-		System::Windows::Forms::MessageBox::Show("Por favor ingrese datos válidos en el año y el mes");
+	private: System::Void btnAgregarTarea_Click(System::Object^ sender, System::EventArgs^ e) {
+		agregarEvento = gcnew AgregarEvento(System::Convert::ToString(mCalendar->SelectionRange->Start));
+		agregarEvento->Show();
 	}
-}
-private: System::Void btnAgregarTarea_Click(System::Object^ sender, System::EventArgs^ e) {
-	AgregarEvento^ agregarEvento = gcnew AgregarEvento();
-	agregarEvento->Show();
-	agregarEvento->EventoAgregado += gcnew AgregarEvento::EventoAgregadoHandler(this->EventoAgregado);
-}
-private: System::Void EventoAgregado(Object^ sender, NodoEvento* nodo) {
-	lEventos->Insertar(nodo);
-}
-private: System::Void txtCBuscarWatermark_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-	txtCBuscar->Text = txtCBuscarWatermark->Text->Substring(0, 1);
-	txtCBuscarWatermark->Visible = false;
-	txtCBuscar->Focus();
-	txtCBuscar->Select(1, 0);
-}
-private: System::Void txtCBuscarWatermark_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-	txtCBuscarWatermark->Select(0, 0);
-}
-private: System::Void txtCBuscar_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-	String^ watermark = "Ingrese el criterio aquí";
-	if (txtCBuscar->Text == "")
-	{
-		txtCBuscarWatermark->Text = watermark;
-		txtCBuscarWatermark->Visible = true;
-		txtCBuscarWatermark->Focus();
+	private: System::Void txtCBuscarWatermark_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		txtCBuscar->Text = txtCBuscarWatermark->Text->Substring(0, 1);
+		txtCBuscarWatermark->Visible = false;
+		txtCBuscar->Focus();
+		txtCBuscar->Select(1, 0);
+	}
+	private: System::Void txtCBuscarWatermark_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		txtCBuscarWatermark->Select(0, 0);
 	}
-}
-private: System::Void cbCBuscar_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
-	if (cbCBuscar->SelectedIndex == 0 || cbCBuscar->SelectedIndex == 1 || cbCBuscar->SelectedIndex == 2)
-	{
-		txtCBuscar->Enabled = true;
-		txtCBuscarWatermark->Enabled = true;
-	}
-}
-private: System::Void mCalendar_DateSelected(System::Object^ sender, System::Windows::Forms::DateRangeEventArgs^ e) {
-	StreamReader^ streamReader = gcnew StreamReader(userActual + ".csv");
-	String^ contenido = streamReader->ReadToEnd();
-	streamReader->Close();
-	String^ texto = "";
-	array<String^>^ datos;
-	array<String^>^ dindividual;
-	if (contenido != "")
-	{
-		datos = contenido->Split('\r');
-		for (int i = 0; i < datos->Length; i++)
+	private: System::Void txtCBuscar_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		String^ watermark = "Ingrese el criterio aquí";
+		if (txtCBuscar->Text == "")
 		{
-			if (datos[i][0] == '\n')
-			{
-				datos[i] = datos[i]->Remove(0, 1);
-			}
+			txtCBuscarWatermark->Text = watermark;
+			txtCBuscarWatermark->Visible = true;
+			txtCBuscarWatermark->Focus();
+			txtCBuscarWatermark->Select(0, 0);
 		}
-
-		//texto = "Tareas " + fecha;
+	}
+	private: System::Void cbCBuscar_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
+		if (cbCBuscar->SelectedIndex == 0 || cbCBuscar->SelectedIndex == 1 || cbCBuscar->SelectedIndex == 2)
+		{
+			txtCBuscar->Enabled = true;
+			txtCBuscarWatermark->Enabled = true;
+		}
+	}
+	private: System::Void mCalendar_DateSelected(System::Object^ sender, System::Windows::Forms::DateRangeEventArgs^ e) {
 		String^ fecha = System::Convert::ToString(mCalendar->SelectionRange->Start);
 		msclr::interop::marshal_context context;
-		std::string fecha1 = context.marshal_as<std::string>(fecha);
-		std::string mplace = "", ipeople = "", nmaterials = "", desc = "", id = "";
-		int hstart = -1, mstart = -1, hend = -1, mend = -1, priority = -1;
-		NodoEvento* newNodo;
-		for (int i = 0; i < datos->Length; i++)
+		int x = lEventos->nElementos;
+		String^ texto = "Eventos " + fecha;
+		NodoEvento* nAux = lEventos->first;
+		lEventos->Sort();
+		for (int i = 0; i < x; i++)
 		{
-			dindividual = datos[i]->Split(',');
-			if (fecha == dindividual[0])
+			if (nAux->actividad->priority != -1)
 			{
-				hstart = System::Convert::ToInt16(dindividual[2]);
-				mstart = System::Convert::ToInt16(dindividual[3]);
+				texto += "\n" + "Actividad: " + context.marshal_as<String^>(nAux->actividad->startHour) + context.marshal_as<String^>(nAux->actividad->endHour) + " - " +
+					context.marshal_as<String^>(nAux->actividad->meetingPlace) + " - " + context.marshal_as<String^>(nAux->actividad->neededMaterials) + " - " + 
+					context.marshal_as<String^>(nAux->actividad->description) + context.marshal_as<String^>(nAux->actividad->identifier);
+			}
+			else if (nAux->recordatorio->priority != -1)
+			{
+				texto += "\n" + "Recordatorio: " + context.marshal_as<String^>(nAux->actividad->startHour) + context.marshal_as<String^>(nAux->recordatorio->description) +
+					context.marshal_as<String^>(nAux->recordatorio->identifier);
+			}
+			else if (nAux->alarma->priority != -1)
+			{
+				texto += "\n" + "Alarma: " + context.marshal_as<String^>(nAux->actividad->startHour) + " - " + context.marshal_as<String^>(nAux->alarma->description) +
+					context.marshal_as<String^>(nAux->alarma->identifier);
+			}
+			nAux = nAux->siguienteNodo;
+		}
+		rtbEventos->Text = texto;
+	}
+	private: System::Void Agenda_Load(System::Object^ sender, System::EventArgs^ e) {
+		StreamReader^ streamReader = gcnew StreamReader(userActual + ".csv");
+		String^ contenido = streamReader->ReadToEnd();
+		streamReader->Close();
+		String^ texto = "";
+		array<String^>^ datos;
+		array<String^>^ dindividual;
+		if (contenido != "")
+		{
+			datos = contenido->Split('\r');
+			for (int i = 0; i < datos->Length; i++)
+			{
+				if (datos[i][0] == '\n')
+				{
+					datos[i] = datos[i]->Remove(0, 1);
+				}
+			}
+
+			String^ fecha = System::Convert::ToString(mCalendar->SelectionRange->Start);
+			msclr::interop::marshal_context context;
+			std::string fecha1 = context.marshal_as<std::string>(fecha);
+			std::string mplace = "", ipeople = "", nmaterials = "", desc = "", id = "", hstart = "", hend = "";
+			int priority = -1;
+			NodoEvento* newNodo;
+			for (int i = 0; i < datos->Length; i++)
+			{
+				dindividual = datos[i]->Split(',');
+				fecha1 = context.marshal_as<std::string>(dindividual[0]);
+				hstart = context.marshal_as<std::string>(dindividual[2]);
 				if (dindividual[1] == "AC")
 				{
-					hend = System::Convert::ToInt16(dindividual[4]);
-					mend = System::Convert::ToInt16(dindividual[5]);
-					mplace = context.marshal_as<std::string>(dindividual[6]);
-					ipeople = context.marshal_as<std::string>(dindividual[7]);
-					nmaterials = context.marshal_as<std::string>(dindividual[8]);
-					desc = context.marshal_as<std::string>(dindividual[9]);
-					id = context.marshal_as<std::string>(dindividual[10]);
-					priority = System::Convert::ToInt16(dindividual[11]);
-					Actividad* newActividad = new Actividad(fecha1, hstart, mstart, hend, mend, mplace, ipeople, nmaterials, desc, id, priority);
+					hend = context.marshal_as<std::string>(dindividual[3]);
+					mplace = context.marshal_as<std::string>(dindividual[4]);
+					ipeople = context.marshal_as<std::string>(dindividual[5]);
+					nmaterials = context.marshal_as<std::string>(dindividual[6]);
+					desc = context.marshal_as<std::string>(dindividual[7]);
+					id = context.marshal_as<std::string>(dindividual[8]);
+					priority = System::Convert::ToInt16(dindividual[9]);
+					Actividad* newActividad = new Actividad(fecha1, hstart, hend, mplace, ipeople, nmaterials, desc, id, priority);
 					newNodo = new NodoEvento(newActividad);
 				}
-				else 
+				else
 				{
 					desc = context.marshal_as<std::string>(dindividual[4]);
 					id = context.marshal_as<std::string>(dindividual[5]);
 					priority = System::Convert::ToInt16(dindividual[6]);
 					if (dindividual[1] == "RE")
 					{
-						Recordatorio* newRecordatorio = new Recordatorio(fecha1, hstart, mstart, desc, id, priority);
+						Recordatorio* newRecordatorio = new Recordatorio(fecha1, hstart, desc, id, priority);
 						newNodo = new NodoEvento(newRecordatorio);
 					}
 					else
 					{
-						Alarma* newAlarma = new Alarma(fecha1, hstart, mstart, desc, id, priority);
+						Alarma* newAlarma = new Alarma(fecha1, hstart, desc, id, priority);
 						newNodo = new NodoEvento(newAlarma);
 					}
 				}
 				lEventos->Insertar(newNodo);
 			}
 		}
-	}
-}
-};
+	};
+	};
 }

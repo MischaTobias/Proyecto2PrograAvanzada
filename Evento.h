@@ -4,7 +4,7 @@ using namespace System;
 class Evento
 {
 public:
-	TimeSpan* startHour;
+	std::string startHour;
 	std::string fecha;
 	std::string description;
 	std::string identifier;

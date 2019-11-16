@@ -1,8 +1,8 @@
 #include "Recordatorio.h"
-Recordatorio::Recordatorio(std::string date, int shour, int smin, std::string desc,
+Recordatorio::Recordatorio(std::string date, std::string shour, std::string desc,
 	std::string id, int p) {
 	fecha = date;
-	startHour = new TimeSpan(shour, smin, 0);
+	startHour = shour;
 	description = desc;
 	identifier = id;
 	priority = p;
