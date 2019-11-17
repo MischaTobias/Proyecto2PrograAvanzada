@@ -625,19 +625,19 @@ private: System::Void btnAgregarEvento_Click(System::Object^ sender, System::Eve
 			case 0:
 				newEvento = new NodoEvento(AgregarActividad());
 				lEventos->Insertar(newEvento);
-				MessageBox::Show("Su evento se ha guardado con éxito");
+				MessageBox::Show("Su actividad se ha guardado con éxito");
 				this->Close();
 				break;
 			case 1:
 				newEvento = new NodoEvento(AgregarRecordatorio());
 				lEventos->Insertar(newEvento);
-				MessageBox::Show("Su evento se ha guardado con éxito");
+				MessageBox::Show("Su recordatorio se ha guardado con éxito");
 				this->Close();
 				break;
 			case 2:
-				newEvento = new NodoEvento(AgregarRecordatorio());
+				newEvento = new NodoEvento(AgregarAlarma());
 				lEventos->Insertar(newEvento);
-				MessageBox::Show("Su evento se ha guardado con éxito");
+				MessageBox::Show("Su alarma se ha guardado con éxito");
 				this->Close();
 				break;
 			}

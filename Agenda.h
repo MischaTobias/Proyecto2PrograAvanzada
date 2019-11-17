@@ -7,6 +7,7 @@
 #include "Actividad.h"
 #include "Recordatorio.h"
 #include "Alarma.h"
+#include "MessageAlarma.h"
 #include <msclr\marshal_cppstd.h>
 
 namespace Proyecto2PrograAvanzada {
@@ -64,13 +65,19 @@ namespace Proyecto2PrograAvanzada {
 	private: System::Windows::Forms::Button^ btnCambiarCalendario;
 	private: System::Windows::Forms::MonthCalendar^ mCalendar;
 
+
+
+
+
+
+
+	private: System::Windows::Forms::Timer^ timer1;
 	private: System::Windows::Forms::Button^ btnExportarAgenda;
 	private: System::Windows::Forms::Button^ btnBuscarTarea;
 	private: System::Windows::Forms::ComboBox^ cbCBuscar;
 	private: System::Windows::Forms::Label^ label4;
 	private: System::Windows::Forms::TextBox^ txtCBuscar;
 	private: System::Windows::Forms::TextBox^ txtCBuscarWatermark;
-	private: System::Windows::Forms::Timer^ timer1;
 	private: System::ComponentModel::IContainer^ components;
 	private:
 		/// <summary>
@@ -95,13 +102,13 @@ namespace Proyecto2PrograAvanzada {
 			this->rtbEventos = (gcnew System::Windows::Forms::RichTextBox());
 			this->btnCambiarCalendario = (gcnew System::Windows::Forms::Button());
 			this->mCalendar = (gcnew System::Windows::Forms::MonthCalendar());
+			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->btnExportarAgenda = (gcnew System::Windows::Forms::Button());
 			this->btnBuscarTarea = (gcnew System::Windows::Forms::Button());
 			this->cbCBuscar = (gcnew System::Windows::Forms::ComboBox());
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->txtCBuscar = (gcnew System::Windows::Forms::TextBox());
 			this->txtCBuscarWatermark = (gcnew System::Windows::Forms::TextBox());
-			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->SuspendLayout();
 			// 
 			// label1
@@ -192,6 +199,11 @@ namespace Proyecto2PrograAvanzada {
 			this->mCalendar->TabIndex = 9;
 			this->mCalendar->DateSelected += gcnew System::Windows::Forms::DateRangeEventHandler(this, &Agenda::mCalendar_DateSelected);
 			// 
+			// timer1
+			// 
+			this->timer1->Interval = 60000;
+			this->timer1->Tick += gcnew System::EventHandler(this, &Agenda::timer1_Tick);
+			// 
 			// btnExportarAgenda
 			// 
 			this->btnExportarAgenda->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -257,11 +269,6 @@ namespace Proyecto2PrograAvanzada {
 			this->txtCBuscarWatermark->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &Agenda::txtCBuscarWatermark_MouseClick);
 			this->txtCBuscarWatermark->TextChanged += gcnew System::EventHandler(this, &Agenda::txtCBuscarWatermark_TextChanged);
 			// 
-			// timer1
-			// 
-			this->timer1->Interval = 60000;
-			this->timer1->Tick += gcnew System::EventHandler(this, &Agenda::timer1_Tick);
-			// 
 			// Agenda
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -296,6 +303,60 @@ namespace Proyecto2PrograAvanzada {
 		AgregarEvento^ agregarEvento;
 		DateTime^ fechahoy = gcnew DateTime();
 	private: System::Void Agenda_FormClosed(System::Object^ sender, System::Windows::Forms::FormClosedEventArgs^ e) {
+		msclr::interop::marshal_context context;
+		if (lEventos->nElementos != 0)
+		{
+			String^ texto = "";
+			NodoEvento* nAux = new NodoEvento();
+			while (lEventos->nElementos != 0)
+			{
+				nAux = lEventos->Quitar();
+				if (nAux->actividad->pnum != -1)
+				{
+					if (texto == "")
+					{
+						texto = context.marshal_as<String^>(nAux->actividad->fecha) + ";" + "AC" + ";" + context.marshal_as<String^>(nAux->actividad->startHour) + ";" + context.marshal_as<String^>(nAux->actividad->endHour) + ";" +
+							context.marshal_as<String^>(nAux->actividad->involvedPeople) + ";" + context.marshal_as<String^>(nAux->actividad->meetingPlace) + ";" + context.marshal_as<String^>(nAux->actividad->neededMaterials) + ";" +
+							context.marshal_as<String^>(nAux->actividad->description) + ";" + context.marshal_as<String^>(nAux->actividad->identifier) + ";" + nAux->actividad->pnum.ToString();
+					}
+					else
+					{
+						texto += "\n\r" + context.marshal_as<String^>(nAux->actividad->fecha) + ";" + "AC" + ";" + context.marshal_as<String^>(nAux->actividad->startHour) + ";" + context.marshal_as<String^>(nAux->actividad->endHour) + ";" +
+							context.marshal_as<String^>(nAux->actividad->involvedPeople) + ";" + context.marshal_as<String^>(nAux->actividad->meetingPlace) + ";" + context.marshal_as<String^>(nAux->actividad->neededMaterials) + ";" +
+							context.marshal_as<String^>(nAux->actividad->description) + ";" + context.marshal_as<String^>(nAux->actividad->identifier) + ";" + nAux->actividad->pnum.ToString();
+					}
+				}
+				else if (nAux->recordatorio->pnum != -1)
+				{
+					if (texto == "")
+					{
+						texto = context.marshal_as<String^>(nAux->recordatorio->fecha) + ";" + "RE" + ";" + context.marshal_as<String^>(nAux->recordatorio->startHour) + ";" + context.marshal_as<String^>(nAux->recordatorio->description) + ";" +
+							context.marshal_as<String^>(nAux->recordatorio->identifier) + ";" + nAux->recordatorio->pnum.ToString();
+					}
+					else
+					{
+						texto += "\n\r" + context.marshal_as<String^>(nAux->recordatorio->fecha) + ";" + "RE" + ";" + context.marshal_as<String^>(nAux->recordatorio->startHour) + ";" + context.marshal_as<String^>(nAux->recordatorio->description) + ";" +
+							context.marshal_as<String^>(nAux->recordatorio->identifier) + ";" + nAux->recordatorio->pnum.ToString();
+					}
+				}
+				else if (nAux->alarma->pnum != -1)
+				{
+					if (texto == "")
+					{
+						texto = context.marshal_as<String^>(nAux->alarma->fecha) + ";" + "AL" + ";" + context.marshal_as<String^>(nAux->alarma->startHour) + ";" + context.marshal_as<String^>(nAux->alarma->description) + ";" +
+							context.marshal_as<String^>(nAux->alarma->identifier) + ";" + nAux->alarma->pnum.ToString();
+					}
+					else
+					{
+						texto += "\n\r" + context.marshal_as<String^>(nAux->alarma->fecha) + ";" + "AL" + ";" + context.marshal_as<String^>(nAux->alarma->startHour) + ";" + context.marshal_as<String^>(nAux->alarma->description) + ";" +
+							context.marshal_as<String^>(nAux->alarma->identifier) + ";" + nAux->alarma->pnum.ToString();
+					}
+				}
+			}
+			StreamWriter^ streamWriter = gcnew StreamWriter(userActual + ".csv");
+			streamWriter->Write(texto);
+			streamWriter->Close();
+		}
 		for (int i = Application::OpenForms->Count; i >= 0; i--)
 		{
 			try
@@ -417,6 +478,14 @@ namespace Proyecto2PrograAvanzada {
 	}
 	private: System::Void mCalendar_DateSelected(System::Object^ sender, System::Windows::Forms::DateRangeEventArgs^ e) {
 		String^ fecha = System::Convert::ToString(mCalendar->SelectionRange->Start);
+		if (fecha->Length == 19)
+		{
+			fecha = fecha->Remove(10, 9);
+		}
+		else
+		{
+			fecha = fecha->Remove(9, 9);
+		}
 		msclr::interop::marshal_context context;
 		int x = lEventos->nElementos;
 		String^ texto = "Eventos " + fecha;
@@ -429,25 +498,25 @@ namespace Proyecto2PrograAvanzada {
 			{
 				if (nAux->actividad->fecha == fecha1)
 				{
-					texto += "\n" + "Actividad: " + context.marshal_as<String^>(nAux->actividad->startHour) + context.marshal_as<String^>(nAux->actividad->endHour) + " - " +
+					texto += "\n" + "Actividad: " + context.marshal_as<String^>(nAux->actividad->startHour) + " - " + context.marshal_as<String^>(nAux->actividad->endHour) + " - " +
 						context.marshal_as<String^>(nAux->actividad->meetingPlace) + " - " + context.marshal_as<String^>(nAux->actividad->neededMaterials) + " - " +
-						context.marshal_as<String^>(nAux->actividad->description) + context.marshal_as<String^>(nAux->actividad->identifier);
+						context.marshal_as<String^>(nAux->actividad->description) + " - " + context.marshal_as<String^>(nAux->actividad->identifier) + " - " + context.marshal_as<String^>(nAux->actividad->priority);
 				}
 			}
 			else if (nAux->recordatorio->pnum != -1)
 			{
 				if (nAux->recordatorio->fecha == fecha1)
 				{
-					texto += "\n" + "Recordatorio: " + context.marshal_as<String^>(nAux->actividad->startHour) + context.marshal_as<String^>(nAux->recordatorio->description) +
-						context.marshal_as<String^>(nAux->recordatorio->identifier);
+					texto += "\n" + "Recordatorio: " + context.marshal_as<String^>(nAux->recordatorio->startHour) + " - " + context.marshal_as<String^>(nAux->recordatorio->description) + " - " +
+						context.marshal_as<String^>(nAux->recordatorio->identifier) + " - " + context.marshal_as<String^>(nAux->recordatorio->priority);
 				}
 			}
 			else if (nAux->alarma->pnum != -1)
 			{
 				if (nAux->alarma->fecha == fecha1)
 				{
-					texto += "\n" + "Alarma: " + context.marshal_as<String^>(nAux->actividad->startHour) + " - " + context.marshal_as<String^>(nAux->alarma->description) +
-						context.marshal_as<String^>(nAux->alarma->identifier);
+					texto += "\n" + "Alarma: " + context.marshal_as<String^>(nAux->alarma->startHour) + " - " + context.marshal_as<String^>(nAux->alarma->description) + " - " +
+						context.marshal_as<String^>(nAux->alarma->identifier) + " - " + context.marshal_as<String^>(nAux->alarma->priority);
 				}
 			}
 			nAux = nAux->siguienteNodo;
@@ -464,10 +533,10 @@ namespace Proyecto2PrograAvanzada {
 		array<String^>^ dindividual;
 		if (contenido != "")
 		{
-			datos = contenido->Split('\r');
+			datos = contenido->Split('\n');
 			for (int i = 0; i < datos->Length; i++)
 			{
-				if (datos[i][0] == '\n')
+				if (datos[i][0] == '\r')
 				{
 					datos[i] = datos[i]->Remove(0, 1);
 				}
@@ -522,9 +591,9 @@ namespace Proyecto2PrograAvanzada {
 				}
 				else
 				{
-					desc = context.marshal_as<std::string>(dindividual[4]);
-					id = context.marshal_as<std::string>(dindividual[5]);
-					pnum = System::Convert::ToInt16(dindividual[6]);
+					desc = context.marshal_as<std::string>(dindividual[3]);
+					id = context.marshal_as<std::string>(dindividual[4]);
+					pnum = System::Convert::ToInt16(dindividual[5]);
 					switch (pnum)
 					{
 					case 1:
@@ -558,6 +627,7 @@ namespace Proyecto2PrograAvanzada {
 		}
 	}
 	private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
+		MessageAlarma^ malarma;
 		String^ fecha = System::Convert::ToString(mCalendar->SelectionRange->Start);
 		if (fecha->Length == 19)
 		{
@@ -571,9 +641,27 @@ namespace Proyecto2PrograAvanzada {
 		std::string fecha1 = context.marshal_as<std::string>(fecha);
 		DateTime^ now = gcnew DateTime();
 		now = now->Now;
+		int min = System::Convert::ToInt16(now->Minute);
+		int h = System::Convert::ToInt16(now->Hour);
 		std::string hora = context.marshal_as<std::string>(now->Hour.ToString());
 		std::string minutes = context.marshal_as<std::string>(now->Minute.ToString());
-		std::string time = hora + ":" + minutes;
+		std::string time;
+		if (min < 10)
+		{
+			time = hora + ":0" + minutes;
+		}
+		else
+		{
+			time = hora + ":" + minutes;
+		}
+		if (h < 10)
+		{
+			time = "0" + hora + ":" + minutes;
+		}
+		else
+		{
+			time = hora + ":" + minutes;
+		}
 		NodoEvento* nAux = lEventos->first;
 
 		int x = lEventos->nElementos;
@@ -595,7 +683,8 @@ namespace Proyecto2PrograAvanzada {
 				{
 					if (time == nAux->recordatorio->startHour)
 					{
-						MessageBox::Show("Ha llegado la hora de: " + context.marshal_as<String^>(nAux->recordatorio->description));
+						malarma = gcnew MessageAlarma(nAux, false);
+						malarma->Show();
 					}
 				}
 			}
@@ -605,7 +694,8 @@ namespace Proyecto2PrograAvanzada {
 				{
 					if (time == nAux->alarma->startHour)
 					{
-						MessageBox::Show("Ha llegado la hora de: " + context.marshal_as<String^>(nAux->alarma->description));
+						malarma = gcnew MessageAlarma(nAux, true);
+						malarma->ShowDialog();
 					}
 				}
 			}

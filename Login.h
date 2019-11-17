@@ -52,6 +52,7 @@ namespace Proyecto2PrograAvanzada {
 	private: System::Windows::Forms::Button^ btnLogin;
 	private: System::Windows::Forms::Label^ lblRegistrar;
 
+
 	private:
 		/// <summary>
 		/// Variable del diseñador necesaria.
@@ -96,8 +97,7 @@ namespace Proyecto2PrograAvanzada {
 			// 
 			// label2
 			// 
-			this->label2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((
-				System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+			this->label2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->label2->AutoSize = true;

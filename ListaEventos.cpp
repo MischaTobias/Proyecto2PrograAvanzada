@@ -34,31 +34,39 @@ NodoEvento* ListaEventos::Quitar() {
 }
 
 void ListaEventos::Sort() {
-	NodoEvento* mayor = new NodoEvento();
+	NodoEvento* n1 = new NodoEvento();
+	NodoEvento* n2 = new NodoEvento();
 	NodoEvento* nAux = new NodoEvento();
-	mayor = first;
-	while (!IsSorted())
+	n1 = first;
+
+	for (int i = 0; i < nElementos - 1; i++)
 	{
-		for (int i = 0; i < nElementos - 1; i++)
+		for (int j = i + 1; j < nElementos; j++)
 		{
-			if (mayor->Priority() > mayor->siguienteNodo->Priority())
+			n1 = ObtenerDePos(i);
+			n2 = ObtenerDePos(j);
+			if (n1->Priority() > n2->Priority())
 			{
-				nAux = mayor;
-				mayor = mayor->siguienteNodo;
-				mayor->siguienteNodo = nAux;
+				nAux = n2;
+				n2 = n1;
+				n1 = nAux;
 			}
 		}
 	}
 }
 
-bool ListaEventos::IsSorted() {
-	NodoEvento* nAux = first;
-	for (int i = 0; i < nElementos - 1; i++)
+NodoEvento* ListaEventos::ObtenerDePos(int pos) {
+	if (pos == 0)
 	{
-		if (first->Priority() > first->siguienteNodo->Priority())
-		{
-			return false;
-		}
+		return first;
 	}
-	return true;
+	else
+	{
+		NodoEvento* aux = first;
+		for (int i = 0; i < pos; i++)
+		{
+			aux = aux->siguienteNodo;
+		}
+		return aux;
+	}
 }

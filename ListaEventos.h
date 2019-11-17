@@ -9,7 +9,7 @@ public:
 public:
 	void Insertar(NodoEvento* evento);
 	void Sort();
-	bool IsSorted();
+	NodoEvento* ObtenerDePos(int pos);
 	NodoEvento* Quitar();
 };
 

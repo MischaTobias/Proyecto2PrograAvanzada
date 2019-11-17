@@ -140,6 +140,7 @@
     <ClCompile Include="Evento.cpp" />
     <ClCompile Include="ListaEventos.cpp" />
     <ClCompile Include="Login.cpp" />
+    <ClCompile Include="MessageAlarma.cpp" />
     <ClCompile Include="NodoEvento.cpp" />
     <ClCompile Include="Recordatorio.cpp" />
     <ClCompile Include="Registro.cpp" />
@@ -158,6 +159,9 @@
     <ClInclude Include="Login.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="MessageAlarma.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="NodoEvento.h" />
     <ClInclude Include="Recordatorio.h" />
     <ClInclude Include="Registro.h">
@@ -173,6 +177,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageAlarma.resx">
+      <DependentUpon>MessageAlarma.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Registro.resx">
       <DependentUpon>Registro.h</DependentUpon>

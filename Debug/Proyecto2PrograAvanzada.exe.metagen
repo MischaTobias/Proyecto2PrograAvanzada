@@ -1,6 +1,7 @@
   Proyecto2PrograAvanzada.Agenda.resources - Embedded, ContainedInManifestFile, 
   Proyecto2PrograAvanzada.AgregarEvento.resources - Embedded, ContainedInManifestFile, 
   Proyecto2PrograAvanzada.Login.resources - Embedded, ContainedInManifestFile, 
+  Proyecto2PrograAvanzada.MessageAlarma.resources - Embedded, ContainedInManifestFile, 
   Proyecto2PrograAvanzada.Registro.resources - Embedded, ContainedInManifestFile, 
 ImageRuntimeVersion: v4.0.30319
 Assembly Proyecto2PrograAvanzada, Version=0.0.*, Culture=Todos los idiomas (todos los países): 
@@ -20,6 +21,10 @@ Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c5619
 Class Proyecto2PrograAvanzada.AgregarEvento: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class Proyecto2PrograAvanzada.MessageAlarma: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Windows.Forms.Form
+    Void .ctor(NodoEvento*, Boolean): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
 Class Proyecto2PrograAvanzada.Agenda: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
