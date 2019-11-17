@@ -3,7 +3,7 @@ ListaEventos::ListaEventos() {
 	first = nullptr;
 	nElementos = 0;
 }
-
+//Constructor que inicializa la lista como "vacía"
 void ListaEventos::Insertar(NodoEvento* evento) {
 	if (first == nullptr)
 	{
@@ -17,7 +17,7 @@ void ListaEventos::Insertar(NodoEvento* evento) {
 		nElementos++;
 	}
 }
-
+//Insertar Nodos
 NodoEvento* ListaEventos::Quitar() {
 	NodoEvento* nodo = new NodoEvento();
 	if (first == nullptr)
@@ -32,7 +32,7 @@ NodoEvento* ListaEventos::Quitar() {
 		return nodo;
 	}
 }
-
+//Quitar Nodos
 void ListaEventos::Sort() {
 	NodoEvento* n1 = new NodoEvento();
 	NodoEvento* n2 = new NodoEvento();
@@ -54,7 +54,7 @@ void ListaEventos::Sort() {
 		}
 	}
 }
-
+//Bubble Sort
 NodoEvento* ListaEventos::ObtenerDePos(int pos) {
 	if (pos == 0)
 	{
@@ -70,3 +70,4 @@ NodoEvento* ListaEventos::ObtenerDePos(int pos) {
 		return aux;
 	}
 }
+//Auxiliar para bubblesort

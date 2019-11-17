@@ -16,7 +16,7 @@ namespace Proyecto2PrograAvanzada {
 	using namespace System::IO;
 
 
-	ListaEventos* lEventos;
+	ListaEventos* lEventos;//Declaración de variable global
 
 	/// <summary>
 	/// Resumen de Login
@@ -26,7 +26,7 @@ namespace Proyecto2PrograAvanzada {
 	public:
 		Login(void)
 		{
-			lEventos = new ListaEventos();
+			lEventos = new ListaEventos();//Inicialización de lista vacía.
 			InitializeComponent();
 			//
 			//TODO: agregar código de constructor aquí
@@ -180,6 +180,7 @@ namespace Proyecto2PrograAvanzada {
 	private: System::Void lblRegistrar_MouseLeave(System::Object^ sender, System::EventArgs^ e) {
 		lblRegistrar->ForeColor = ForeColor.MediumBlue;
 	}
+		   //Funcionamiento visual
 	private: System::Void btnLogin_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (Existe(txtUsuario->Text, txtPass->Text))
 		{
@@ -192,6 +193,7 @@ namespace Proyecto2PrograAvanzada {
 			System::Windows::Forms::MessageBox::Show("Ingrese un usuario y contraseña válidos");
 		}
 	}
+		   //Abre un nuevo form de la agenda para el manejo de los eventos
 	private: System::Boolean Existe(String^ usuario, String^ pass) {
 		StreamReader^ streamReader = gcnew StreamReader("Users.csv");
 		System::String^ contenido = streamReader->ReadToEnd();
@@ -216,9 +218,11 @@ namespace Proyecto2PrograAvanzada {
 		return false;
 
 	}
+		   //Función que comprueba si el usuario y contraseña ingresada son válidos.
 	private: System::Void lblRegistrar_Click(System::Object^ sender, System::EventArgs^ e) {
 		Registro^ registro = gcnew Registro();
 		registro->Show();
 	}
+		   //Función que abre otro form para modificar el archivo users.csv y poder así logearse desde este form.
 	};
 }

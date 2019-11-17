@@ -181,6 +181,7 @@ namespace Proyecto2PrograAvanzada {
 	private: System::Void btnRegistrar_MouseLeave(System::Object^ sender, System::EventArgs^ e) {
 		btnRegistrar->BackColor = BackColor.Gainsboro;
 	}
+		   //Funcionamiento visual
 	private: System::Void btnRegistrar_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (Valido(txtUsuario->Text, txtPass->Text, txtPass2->Text))
 		{
@@ -207,6 +208,7 @@ namespace Proyecto2PrograAvanzada {
 			this->Close();
 		}
 	}
+		   //Procedimiento que modifica el archivo users.csv y agrega un nuevo usuario y su contraseña.
 	private: System::Boolean Valido(String^ usuario, String^ pass, String^ pass2) {
 		StreamReader^ streamReader = gcnew StreamReader("Users.csv");
 		String^ contenido = streamReader->ReadToEnd();
@@ -241,5 +243,7 @@ namespace Proyecto2PrograAvanzada {
 			return true;
 		}
 	}
+		   //Función que devuelve un valor booleano al comprobar que los datos de usuario y contraseña sean válidos y no repetidos. Apoyo para 
+		   //btnRegistrar_Click
 };
 }

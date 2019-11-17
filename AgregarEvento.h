@@ -17,14 +17,14 @@ namespace Proyecto2PrograAvanzada {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-	extern ListaEventos* lEventos;
+	extern ListaEventos* lEventos;	//Declaración de variable externa, no pertenece a esta clase pero se pueden manejar sus datos.
 
 	/// <summary>
 	/// Resumen de AgregarEvento
 	/// </summary>
 	public ref class AgregarEvento : public System::Windows::Forms::Form
 	{
-		String^ fecha;
+		String^ fecha;//Declaración de variables para su posterior uso
 	public:
 		AgregarEvento(void)
 		{
@@ -47,7 +47,7 @@ namespace Proyecto2PrograAvanzada {
 			}
 			InitializeComponent();
 		}
-
+		//Constructor que cambia la variable fecha con base en su longitud (Para poder realizar comparaciones con los eventos)
 	protected:
 		/// <summary>
 		/// Limpiar los recursos que se estén usando.
@@ -95,7 +95,7 @@ namespace Proyecto2PrograAvanzada {
 		/// <summary>
 		/// Variable del diseñador necesaria.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+		System::ComponentModel::Container^ components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -450,196 +450,202 @@ namespace Proyecto2PrograAvanzada {
 		}
 #pragma endregion
 		//Procedimientos que hacen cambiar textbox normales por textbox con watermark (funcionamiento visual)
-private: System::Void txtstartHourWatermark_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-	txtstartHour->Text = txtstartHourWatermark->Text->Substring(0,1);
-	txtstartHourWatermark->Visible = false;
-	txtstartHour->Focus();
-	txtstartHour->Select(1, 0);
-}
-private: System::Void txtstartHour_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-	String^ watermark = "Hora:Minutos";
-	if (txtstartHour->Text == "")
-	{
-		txtstartHourWatermark->Text = watermark;
-		txtstartHourWatermark->Visible = true;
-		txtstartHourWatermark->Focus();
+	private: System::Void txtstartHourWatermark_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		txtstartHour->Text = txtstartHourWatermark->Text->Substring(0, 1);
+		txtstartHourWatermark->Visible = false;
+		txtstartHour->Focus();
+		txtstartHour->Select(1, 0);
+	}
+	private: System::Void txtstartHour_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		String^ watermark = "Hora:Minutos";
+		if (txtstartHour->Text == "")
+		{
+			txtstartHourWatermark->Text = watermark;
+			txtstartHourWatermark->Visible = true;
+			txtstartHourWatermark->Focus();
+			txtstartHourWatermark->Select(0, 0);
+		}
+	}
+	private: System::Void txtstartHourWatermark_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		txtstartHourWatermark->Select(0, 0);
 	}
-}
-private: System::Void txtstartHourWatermark_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-	txtstartHourWatermark->Select(0, 0);
-}
-private: System::Void rtbDescriptionWatermark_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-	rtbDescription->Text = rtbDescriptionWatermark->Text->Substring(0, 1);
-	rtbDescriptionWatermark->Visible = false;
-	rtbDescription->Focus();
-	rtbDescription->Select(1, 0);
-}
-private: System::Void rtbDescription_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-	String^ watermark = "Ingrese la descripción aquí";
-	if (rtbDescription->Text == "")
-	{
-		rtbDescriptionWatermark->Text = watermark;
-		rtbDescriptionWatermark->Visible = true;
-		rtbDescriptionWatermark->Focus();
+	private: System::Void rtbDescriptionWatermark_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		rtbDescription->Text = rtbDescriptionWatermark->Text->Substring(0, 1);
+		rtbDescriptionWatermark->Visible = false;
+		rtbDescription->Focus();
+		rtbDescription->Select(1, 0);
+	}
+	private: System::Void rtbDescription_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		String^ watermark = "Ingrese la descripción aquí";
+		if (rtbDescription->Text == "")
+		{
+			rtbDescriptionWatermark->Text = watermark;
+			rtbDescriptionWatermark->Visible = true;
+			rtbDescriptionWatermark->Focus();
+			rtbDescriptionWatermark->Select(0, 0);
+		}
+	}
+	private: System::Void rtbDescriptionWatermark_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		rtbDescriptionWatermark->Select(0, 0);
 	}
-}
-private: System::Void rtbDescriptionWatermark_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-	rtbDescriptionWatermark->Select(0, 0);
-}
-private: System::Void txtIdentifier_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-	String^ watermark = "Ingrese el identificador aquí";
-	if (txtIdentifier->Text == "")
-	{
-		txtIdentifierWatermark->Text = watermark;
-		txtIdentifierWatermark->Visible = true;
-		txtIdentifierWatermark->Focus();
+	private: System::Void txtIdentifier_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		String^ watermark = "Ingrese el identificador aquí";
+		if (txtIdentifier->Text == "")
+		{
+			txtIdentifierWatermark->Text = watermark;
+			txtIdentifierWatermark->Visible = true;
+			txtIdentifierWatermark->Focus();
+			txtIdentifierWatermark->Select(0, 0);
+		}
+	}
+	private: System::Void txtIdentifierWatermark_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		txtIdentifier->Text = txtIdentifierWatermark->Text->Substring(0, 1);
+		txtIdentifierWatermark->Visible = false;
+		txtIdentifier->Focus();
+		txtIdentifier->Select(1, 0);
+	}
+	private: System::Void txtIdentifierWatermark_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		txtIdentifierWatermark->Select(0, 0);
 	}
-}
-private: System::Void txtIdentifierWatermark_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-	txtIdentifier->Text = txtIdentifierWatermark->Text->Substring(0, 1);
-	txtIdentifierWatermark->Visible = false;
-	txtIdentifier->Focus();
-	txtIdentifier->Select(1, 0);
-}
-private: System::Void txtIdentifierWatermark_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-	txtIdentifierWatermark->Select(0, 0);
-}
-private: System::Void txtendHourWatermark_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-	txtendHour->Text = txtendHourWatermark->Text->Substring(0, 1);
-	txtendHourWatermark->Visible = false;
-	txtendHour->Focus();
-	txtendHour->Select(1, 0);
-}
-private: System::Void txtendHourWatermark_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-	txtendHourWatermark->Select(0, 0);
-}
-private: System::Void txtendHour_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-	String^ watermark = "Hora:Minutos";
-	if (txtendHour->Text == "")
-	{
-		txtendHourWatermark->Text = watermark;
-		txtendHourWatermark->Visible = true;
-		txtendHourWatermark->Focus();
+	private: System::Void txtendHourWatermark_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		txtendHour->Text = txtendHourWatermark->Text->Substring(0, 1);
+		txtendHourWatermark->Visible = false;
+		txtendHour->Focus();
+		txtendHour->Select(1, 0);
+	}
+	private: System::Void txtendHourWatermark_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		txtendHourWatermark->Select(0, 0);
 	}
-}
-private: System::Void txtmeetingPlaceWatermark_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-	txtmeetingPlace->Text = txtmeetingPlaceWatermark->Text->Substring(0, 1);
-	txtmeetingPlaceWatermark->Visible = false;
-	txtmeetingPlace->Focus();
-	txtmeetingPlace->Select(1, 0);
-}
-private: System::Void txtmeetingPlaceWatermark_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-	txtmeetingPlaceWatermark->Select(0, 0);
-}
-private: System::Void txtmeetingPlace_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-	String^ watermark = "Ingrese el lugar aquí";
-	if (txtmeetingPlace->Text == "")
-	{
-		txtmeetingPlaceWatermark->Text = watermark;
-		txtmeetingPlaceWatermark->Visible = true;
-		txtmeetingPlaceWatermark->Focus();
+	private: System::Void txtendHour_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		String^ watermark = "Hora:Minutos";
+		if (txtendHour->Text == "")
+		{
+			txtendHourWatermark->Text = watermark;
+			txtendHourWatermark->Visible = true;
+			txtendHourWatermark->Focus();
+			txtendHourWatermark->Select(0, 0);
+		}
+	}
+	private: System::Void txtmeetingPlaceWatermark_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		txtmeetingPlace->Text = txtmeetingPlaceWatermark->Text->Substring(0, 1);
+		txtmeetingPlaceWatermark->Visible = false;
+		txtmeetingPlace->Focus();
+		txtmeetingPlace->Select(1, 0);
+	}
+	private: System::Void txtmeetingPlaceWatermark_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		txtmeetingPlaceWatermark->Select(0, 0);
 	}
-}
-private: System::Void txtInvolvedPeople_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-	String^ watermark = "<persona1>,<persona2>...";
-	if (txtInvolvedPeople->Text == "")
-	{
-		txtInvolvedPeopleWatermark->Text = watermark;
-		txtInvolvedPeopleWatermark->Visible = true;
-		txtInvolvedPeopleWatermark->Focus();
+	private: System::Void txtmeetingPlace_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		String^ watermark = "Ingrese el lugar aquí";
+		if (txtmeetingPlace->Text == "")
+		{
+			txtmeetingPlaceWatermark->Text = watermark;
+			txtmeetingPlaceWatermark->Visible = true;
+			txtmeetingPlaceWatermark->Focus();
+			txtmeetingPlaceWatermark->Select(0, 0);
+		}
+	}
+	private: System::Void txtInvolvedPeople_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		String^ watermark = "<persona1>,<persona2>...";
+		if (txtInvolvedPeople->Text == "")
+		{
+			txtInvolvedPeopleWatermark->Text = watermark;
+			txtInvolvedPeopleWatermark->Visible = true;
+			txtInvolvedPeopleWatermark->Focus();
+			txtInvolvedPeopleWatermark->Select(0, 0);
+		}
+	}
+	private: System::Void txtInvolvedPeopleWatermark_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		txtInvolvedPeople->Text = txtInvolvedPeopleWatermark->Text->Substring(0, 1);
+		txtInvolvedPeopleWatermark->Visible = false;
+		txtInvolvedPeople->Focus();
+		txtInvolvedPeople->Select(1, 0);
+	}
+	private: System::Void txtInvolvedPeopleWatermark_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		txtInvolvedPeopleWatermark->Select(0, 0);
 	}
-}
-private: System::Void txtInvolvedPeopleWatermark_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-	txtInvolvedPeople->Text = txtInvolvedPeopleWatermark->Text->Substring(0, 1);
-	txtInvolvedPeopleWatermark->Visible = false;
-	txtInvolvedPeople->Focus();
-	txtInvolvedPeople->Select(1, 0);
-}
-private: System::Void txtInvolvedPeopleWatermark_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-	txtInvolvedPeopleWatermark->Select(0, 0);
-}
-private: System::Void rtbMaterialsWatermark_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-	rtbMaterials->Text = rtbMaterialsWatermark->Text->Substring(0, 1);
-	rtbMaterialsWatermark->Visible = false;
-	rtbMaterials->Focus();
-	rtbMaterials->Select(1, 0);
-}
-private: System::Void rtbMaterialsWatermark_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-	rtbMaterialsWatermark->Select(0, 0);
-}
-private: System::Void rtbMaterials_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-	String^ watermark = "Ingrese los materiales aquí";
-	if (rtbMaterials->Text == "")
-	{
-		rtbMaterialsWatermark->Text = watermark;
-		rtbMaterialsWatermark->Visible = true;
-		rtbMaterialsWatermark->Focus();
+	private: System::Void rtbMaterialsWatermark_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		rtbMaterials->Text = rtbMaterialsWatermark->Text->Substring(0, 1);
+		rtbMaterialsWatermark->Visible = false;
+		rtbMaterials->Focus();
+		rtbMaterials->Select(1, 0);
+	}
+	private: System::Void rtbMaterialsWatermark_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		rtbMaterialsWatermark->Select(0, 0);
 	}
-}
-private: System::Void cbEvents_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
-	if (cbEvents->SelectedIndex == 0)
-	{
-		txtendHour->Enabled = true;
-		txtmeetingPlace->Enabled = true;
-		txtInvolvedPeople->Enabled = true;
-		rtbMaterials->Enabled = true;
-		txtendHourWatermark->Enabled = true;
-		txtmeetingPlaceWatermark->Enabled = true;
-		txtInvolvedPeopleWatermark->Enabled = true;
-		rtbMaterialsWatermark->Enabled = true;
-	}
-	else
-	{
-		txtendHour->Enabled = false;
-		txtmeetingPlace->Enabled = false;
-		txtInvolvedPeople->Enabled = false;
-		rtbMaterials->Enabled = false;
-		txtendHourWatermark->Enabled = false;
-		txtmeetingPlaceWatermark->Enabled = false;
-		txtInvolvedPeopleWatermark->Enabled = false;
-		rtbMaterialsWatermark->Enabled = false;
-	}
-}
-private: System::Void btnAgregarEvento_MouseEnter(System::Object^ sender, System::EventArgs^ e) {
-	btnAgregarEvento->BackColor = BackColor.White;
-}
-private: System::Void btnAgregarEvento_MouseLeave(System::Object^ sender, System::EventArgs^ e) {
-	btnAgregarEvento->BackColor = BackColor.Gainsboro;
-}
-//Agregar un evento
-private: System::Void btnAgregarEvento_Click(System::Object^ sender, System::EventArgs^ e) {
-	NodoEvento* newEvento;
-	if (!(txtstartHour->Text == "" || rtbDescription->Text == "" || txtIdentifier->Text == ""))
-	{
-		if (ValidInfo())
+	private: System::Void rtbMaterials_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+		String^ watermark = "Ingrese los materiales aquí";
+		if (rtbMaterials->Text == "")
 		{
-			switch (cbEvents->SelectedIndex)
+			rtbMaterialsWatermark->Text = watermark;
+			rtbMaterialsWatermark->Visible = true;
+			rtbMaterialsWatermark->Focus();
+			rtbMaterialsWatermark->Select(0, 0);
+		}
+	}
+	private: System::Void cbEvents_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
+		if (cbEvents->SelectedIndex == 0)
+		{
+			txtendHour->Enabled = true;
+			txtmeetingPlace->Enabled = true;
+			txtInvolvedPeople->Enabled = true;
+			rtbMaterials->Enabled = true;
+			txtendHourWatermark->Enabled = true;
+			txtmeetingPlaceWatermark->Enabled = true;
+			txtInvolvedPeopleWatermark->Enabled = true;
+			rtbMaterialsWatermark->Enabled = true;
+		}
+		else
+		{
+			txtendHour->Enabled = false;
+			txtmeetingPlace->Enabled = false;
+			txtInvolvedPeople->Enabled = false;
+			rtbMaterials->Enabled = false;
+			txtendHourWatermark->Enabled = false;
+			txtmeetingPlaceWatermark->Enabled = false;
+			txtInvolvedPeopleWatermark->Enabled = false;
+			rtbMaterialsWatermark->Enabled = false;
+		}
+	}
+	private: System::Void btnAgregarEvento_MouseEnter(System::Object^ sender, System::EventArgs^ e) {
+		btnAgregarEvento->BackColor = BackColor.White;
+	}
+	private: System::Void btnAgregarEvento_MouseLeave(System::Object^ sender, System::EventArgs^ e) {
+		btnAgregarEvento->BackColor = BackColor.Gainsboro;
+	}
+
+		   //Agregar un evento
+	private: System::Void btnAgregarEvento_Click(System::Object^ sender, System::EventArgs^ e) {
+		NodoEvento* newEvento;
+		if (!(txtstartHour->Text == "" || rtbDescription->Text == "" || txtIdentifier->Text == ""))
+		{
+			if (ValidInfo())
 			{
-			case 0:
-				newEvento = new NodoEvento(AgregarActividad());
-				lEventos->Insertar(newEvento);
-				MessageBox::Show("Su actividad se ha guardado con éxito");
-				this->Close();
-				break;
-			case 1:
-				newEvento = new NodoEvento(AgregarRecordatorio());
-				lEventos->Insertar(newEvento);
-				MessageBox::Show("Su recordatorio se ha guardado con éxito");
-				this->Close();
-				break;
-			case 2:
-				newEvento = new NodoEvento(AgregarAlarma());
-				lEventos->Insertar(newEvento);
-				MessageBox::Show("Su alarma se ha guardado con éxito");
-				this->Close();
-				break;
+				switch (cbEvents->SelectedIndex)
+				{
+				case 0:
+					newEvento = new NodoEvento(AgregarActividad());
+					lEventos->Insertar(newEvento);
+					MessageBox::Show("Su actividad se ha guardado con éxito");
+					this->Close();
+					break;
+				case 1:
+					newEvento = new NodoEvento(AgregarRecordatorio());
+					lEventos->Insertar(newEvento);
+					MessageBox::Show("Su recordatorio se ha guardado con éxito");
+					this->Close();
+					break;
+				case 2:
+					newEvento = new NodoEvento(AgregarAlarma());
+					lEventos->Insertar(newEvento);
+					MessageBox::Show("Su alarma se ha guardado con éxito");
+					this->Close();
+					break;
+				}
+			}
+			else
+			{
+				MessageBox::Show("Por favor ingrese datos válidos en todos los campos del formulario");
 			}
 		}
 		else
@@ -647,34 +653,45 @@ private: System::Void btnAgregarEvento_Click(System::Object^ sender, System::Eve
 			MessageBox::Show("Por favor ingrese datos válidos en todos los campos del formulario");
 		}
 	}
-	else
-	{
-		MessageBox::Show("Por favor ingrese datos válidos en todos los campos del formulario");
-	}
-}
-private: System::Boolean ValidInfo() {
-	if (cbEvents->SelectedIndex == -1 || cbPriority->SelectedIndex == -1 || txtstartHour->Text == "" || rtbDescription->Text == "" || txtIdentifier->Text == "")
-	{
-		return false;
-	}
-	else
-	{
-		if (cbEvents->SelectedIndex == 0)
+		   //Procedimiento que agrega un NodoEvento; su constructor varía con respecto a el selectedindex del combobox de los eventos.
+	private: System::Boolean ValidInfo() {
+		if (cbEvents->SelectedIndex == -1 || cbPriority->SelectedIndex == -1 || txtstartHour->Text == "" || rtbDescription->Text == "" || txtIdentifier->Text == "")
 		{
-			if (txtendHour->Text == "" || txtmeetingPlace->Text == "" || rtbMaterials->Text == "")
+			return false;
+		}
+		else
+		{
+			if (cbEvents->SelectedIndex == 0)
 			{
-				return false;
+				if (txtendHour->Text == "" || txtmeetingPlace->Text == "" || rtbMaterials->Text == "")
+				{
+					return false;
+				}
+				else
+				{
+					array<String^>^ hora = txtstartHour->Text->Split(':');
+					array<String^>^ hora2 = txtendHour->Text->Split(':');
+					try
+					{
+						int x = System::Convert::ToInt16(hora[0]);
+						int y = System::Convert::ToInt16(hora[1]);
+						int w = System::Convert::ToInt16(hora2[0]);
+						int z = System::Convert::ToInt16(hora2[1]);
+						return true;
+					}
+					catch (...)
+					{
+						return false;
+					}
+				}
 			}
 			else
 			{
 				array<String^>^ hora = txtstartHour->Text->Split(':');
-				array<String^>^ hora2 = txtendHour->Text->Split(':');
 				try
 				{
 					int x = System::Convert::ToInt16(hora[0]);
 					int y = System::Convert::ToInt16(hora[1]);
-					int w = System::Convert::ToInt16(hora2[0]);
-					int z = System::Convert::ToInt16(hora2[1]);
 					return true;
 				}
 				catch (...)
@@ -683,103 +700,91 @@ private: System::Boolean ValidInfo() {
 				}
 			}
 		}
-		else
+	}
+		   //Verifica que la información en los textbox sea válida para poder continuar con la ejecución y poder insertar los eventos en la lista.
+	private: Actividad* AgregarActividad() {
+		msclr::interop::marshal_context context;
+		std::string f = context.marshal_as<std::string>(fecha);
+		std::string hstart = context.marshal_as<std::string>(txtstartHour->Text);
+		std::string hend = context.marshal_as<std::string>(txtendHour->Text);
+		std::string mplace = context.marshal_as<std::string>(txtmeetingPlace->Text);
+		std::string ipeople = context.marshal_as<std::string>(txtInvolvedPeople->Text);
+		std::string nmaterials = context.marshal_as<std::string>(rtbMaterials->Text);
+		std::string desc = context.marshal_as<std::string>(rtbDescription->Text);
+		std::string id = context.marshal_as<std::string>(txtIdentifier->Text);
+		int pnum = cbPriority->SelectedIndex + 1;
+		std::string priority = "";
+		switch (pnum)
 		{
-			array<String^>^ hora = txtstartHour->Text->Split(':');
-			try
-			{
-				int x = System::Convert::ToInt16(hora[0]);
-				int y = System::Convert::ToInt16(hora[1]);
-				return true;
-			}
-			catch (...)
-			{
-				return false;
-			}
+		case 1:
+			priority = "Muy alta";
+			break;
+		case 2:
+			priority = "Alta";
+			break;
+		case 3:
+			priority = "Media";
+			break;
+		case 4:
+			priority = "Baja";
+			break;
 		}
+		Actividad* actividad = new Actividad(f, hstart, hend, mplace, ipeople, nmaterials, desc, id, priority, pnum);
+		return actividad;
 	}
-}
-private: Actividad* AgregarActividad() {
-	msclr::interop::marshal_context context;
-	std::string f = context.marshal_as<std::string>(fecha);
-	std::string hstart = context.marshal_as<std::string>(txtstartHour->Text);
-	std::string hend = context.marshal_as<std::string>(txtendHour->Text);
-	std::string mplace = context.marshal_as<std::string>(txtmeetingPlace->Text);
-	std::string ipeople = context.marshal_as<std::string>(txtInvolvedPeople->Text);
-	std::string nmaterials = context.marshal_as<std::string>(rtbMaterials->Text);
-	std::string desc = context.marshal_as<std::string>(rtbDescription->Text);
-	std::string id = context.marshal_as<std::string>(txtIdentifier->Text);
-	int pnum = cbPriority->SelectedIndex + 1;
-	std::string priority = "";
-	switch (pnum)
-	{
-	case 1:
-		priority = "Muy alta";
-		break;
-	case 2:
-		priority = "Alta";
-		break;
-	case 3:
-		priority = "Media";
-		break;
-	case 4:
-		priority = "Baja";
-		break;
+	private: Recordatorio* AgregarRecordatorio() {
+		msclr::interop::marshal_context context;
+		std::string f = context.marshal_as<std::string>(fecha);
+		std::string hstart = context.marshal_as<std::string>(txtstartHour->Text);
+		std::string desc = context.marshal_as<std::string>(rtbDescription->Text);
+		std::string id = context.marshal_as<std::string>(txtIdentifier->Text);
+		int pnum = cbPriority->SelectedIndex + 1;
+		std::string priority = "";
+		switch (pnum)
+		{
+		case 1:
+			priority = "Muy alta";
+			break;
+		case 2:
+			priority = "Alta";
+			break;
+		case 3:
+			priority = "Media";
+			break;
+		case 4:
+			priority = "Baja";
+			break;
+		}
+		Recordatorio* recordatorio = new Recordatorio(f, hstart, desc, id, priority, pnum);
+		return recordatorio;
 	}
-	Actividad* actividad = new Actividad(f, hstart, hend, mplace, ipeople, nmaterials, desc, id, priority, pnum);
-	return actividad;
-}
-private: Recordatorio* AgregarRecordatorio() {
-	msclr::interop::marshal_context context;
-	std::string f = context.marshal_as<std::string>(fecha);
-	std::string hstart = context.marshal_as<std::string>(txtstartHour->Text);
-	std::string desc = context.marshal_as<std::string>(rtbDescription->Text);
-	std::string id = context.marshal_as<std::string>(txtIdentifier->Text);
-	int pnum = cbPriority->SelectedIndex + 1;
-	std::string priority = "";
-	switch (pnum)
-	{
-	case 1:
-		priority = "Muy alta";
-		break;
-	case 2:
-		priority = "Alta";
-		break;
-	case 3:
-		priority = "Media";
-		break;
-	case 4:
-		priority = "Baja";
-		break;
+	private: Alarma* AgregarAlarma() {
+		msclr::interop::marshal_context context;
+		std::string f = context.marshal_as<std::string>(fecha);
+		std::string hstart = context.marshal_as<std::string>(txtstartHour->Text);
+		std::string desc = context.marshal_as<std::string>(rtbDescription->Text);
+		std::string id = context.marshal_as<std::string>(txtIdentifier->Text);
+		int pnum = cbPriority->SelectedIndex + 1;
+		std::string priority = "";
+		switch (pnum)
+		{
+		case 1:
+			priority = "Muy alta";
+			break;
+		case 2:
+			priority = "Alta";
+			break;
+		case 3:
+			priority = "Media";
+			break;
+		case 4:
+			priority = "Baja";
+			break;
+		}
+		Alarma* alarma = new Alarma(f, hstart, desc, id, priority, pnum);
+		return alarma;
 	}
-	Recordatorio* recordatorio = new Recordatorio(f, hstart, desc, id, priority, pnum);
-	return recordatorio;
-}
-private: Alarma* AgregarAlarma() {
-	msclr::interop::marshal_context context;
-	std::string f = context.marshal_as<std::string>(fecha);
-	std::string hstart = context.marshal_as<std::string>(txtstartHour->Text);
-	std::string desc = context.marshal_as<std::string>(rtbDescription->Text);
-	std::string id = context.marshal_as<std::string>(txtIdentifier->Text);
-	int pnum = cbPriority->SelectedIndex + 1;
-	std::string priority = "";
-	switch (pnum)
-	{
-	case 1:
-		priority = "Muy alta";
-		break;
-	case 2:
-		priority = "Alta";
-		break;
-	case 3:
-		priority = "Media";
-		break;
-	case 4:
-		priority = "Baja";
-		break;
-	}
-	Alarma* alarma = new Alarma(f, hstart, desc, id, priority, pnum);
-	return alarma;
-}
-};
+		   //Funciones que con base en el selected index del combobox de los eventos, recolectan los datos en los diferentes textbox y richtextbox y
+		   //devuelven diferentes valores (Actividad, recordatorio o alarma) para generar el Nodo en el procedimiento btnAgregarEvento_Click.
+	};
 }

@@ -1,5 +1,14 @@
-﻿  Agenda.cpp
+﻿  Actividad.cpp
+  Agenda.cpp
+  AgregarEvento.cpp
+  Alarma.cpp
+  Evento.cpp
+  ListaEventos.cpp
   Login.cpp
+  MessageAlarma.cpp
+  NodoEvento.cpp
+  Recordatorio.cpp
+  Registro.cpp
   Generando código...
   Actividad.obj : se encontró un módulo MSIL; vinculación incremental deshabilitada para MSIL; ejecutando vínculo completo
   Proyecto2PrograAvanzada.vcxproj -> C:\Users\misch\source\repos\Proyecto2PrograAvanzada\Debug\Proyecto2PrograAvanzada.exe

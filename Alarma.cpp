@@ -7,12 +7,10 @@ Alarma::Alarma(std::string date, std::string shour, std::string desc, std::strin
 	priority = p;
 	this->pnum = pnum;
 }
+//Constructor que asigna las diferentes variables heredadas con base en los parámetros recibidos.
 
 Alarma::Alarma() {
 	priority = "N";
 	pnum = -1;
 }
-
-void Alarma::ItsTime() {
-
-}
+//Constructor que inicializa las variables señalando que el objeto está "vacío"

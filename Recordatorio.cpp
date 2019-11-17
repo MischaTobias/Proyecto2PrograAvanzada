@@ -8,12 +8,10 @@ Recordatorio::Recordatorio(std::string date, std::string shour, std::string desc
 	priority = p;
 	this->pnum = pnum;
 }
+//Constructor que asigna valor a las diferentes variables locales y heredadas.
 
 Recordatorio::Recordatorio() {
 	priority = "N";
 	pnum = -1;
 }
-
-void Recordatorio::ItsTime() {
-
-}
+//Constructor que asigna este recordatorio como "vacío"

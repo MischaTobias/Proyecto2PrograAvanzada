@@ -23,6 +23,7 @@ NodoEvento::NodoEvento(Alarma* alarm) {
 NodoEvento::NodoEvento() {
 
 }
+//Constructores polimorfos, asignación de variables con base a un diferente elemento enviado como parámetro.
 
 int NodoEvento::Priority() {
 	if (actividad->pnum != -1)
@@ -38,3 +39,4 @@ int NodoEvento::Priority() {
 		return alarma->pnum;
 	}
 }
+//Devuelve la prioridad del evento guardado en este nodo.

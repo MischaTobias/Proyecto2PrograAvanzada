@@ -20,27 +20,28 @@ namespace Proyecto2PrograAvanzada {
 	using namespace System::Drawing;
 	using namespace System::IO;
 
+	//Declaración de variable externa, no pertenece a esta clase pero se pueden manejar sus datos.
 	extern ListaEventos* lEventos;
 	/// <summary>
 	/// Resumen de Agenda
 	/// </summary>
 	public ref class Agenda : public System::Windows::Forms::Form
 	{
-		String^ userActual;
+		String^ userActual;//Variable auxiliar para el usuario (lectura y guardado de archivos)
 	public:
 		Agenda(String^ user)
 		{
 			InitializeComponent();
 			userActual = user;
 			lEventos = new ListaEventos();
-			//
-			//TODO: agregar código de constructor aquí
-			//
-		}
+		}//Constructor que asigna un valor al usuario e inicializa la lista de eventos;
 		//Constructor
 		Agenda(void)
 		{
 			InitializeComponent();
+			//
+			//TODO: agregar código de constructor aquí
+			//
 		}
 
 	protected:
@@ -206,6 +207,7 @@ namespace Proyecto2PrograAvanzada {
 			// 
 			// btnExportarAgenda
 			// 
+			this->btnExportarAgenda->Enabled = false;
 			this->btnExportarAgenda->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->btnExportarAgenda->Location = System::Drawing::Point(303, 210);
@@ -217,6 +219,7 @@ namespace Proyecto2PrograAvanzada {
 			// 
 			// btnBuscarTarea
 			// 
+			this->btnBuscarTarea->Enabled = false;
 			this->btnBuscarTarea->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->btnBuscarTarea->Location = System::Drawing::Point(465, 275);
@@ -229,6 +232,7 @@ namespace Proyecto2PrograAvanzada {
 			// cbCBuscar
 			// 
 			this->cbCBuscar->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			this->cbCBuscar->Enabled = false;
 			this->cbCBuscar->FormattingEnabled = true;
 			this->cbCBuscar->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"ID", L"Fecha", L"Palabras en la descripción" });
 			this->cbCBuscar->Location = System::Drawing::Point(303, 278);
@@ -298,6 +302,7 @@ namespace Proyecto2PrograAvanzada {
 
 		}
 #pragma endregion
+		//Declaración de variables a utilizar durante la ejecución del programa
 		bool bisiesto = 0;
 		int year, month, days;
 		AgregarEvento^ agregarEvento;
@@ -369,70 +374,8 @@ namespace Proyecto2PrograAvanzada {
 			}
 		}
 	}
-	private: System::Void SobreEscribirArchivo() {
-		msclr::interop::marshal_context context;
-		int cont = 0;
-		StreamWriter^ streamWriter = gcnew StreamWriter(userActual + ".csv");
-		String^ textoArchivo = "";
-		NodoEvento* newNodo = lEventos->first;
-		while (lEventos->nElementos > 0)
-		{
-			if (newNodo->actividad->pnum != -1)
-			{
-				if (cont == 0)
-				{
-					textoArchivo += context.marshal_as<String^>(newNodo->actividad->fecha) + ';' + "AC" + ';' + context.marshal_as<String^>(newNodo->actividad->startHour) +
-						';' + context.marshal_as<String^>(newNodo->actividad->endHour) + ';' + context.marshal_as<String^>(newNodo->actividad->meetingPlace) + ';' +
-						context.marshal_as<String^>(newNodo->actividad->involvedPeople) + ';' + context.marshal_as<String^>(newNodo->actividad->neededMaterials) + ';' +
-						context.marshal_as<String^>(newNodo->actividad->description) + ';' + context.marshal_as<String^>(newNodo->actividad->identifier) + ';' +
-						context.marshal_as<String^>(newNodo->actividad->priority);
-					cont++;
-				}
-				else
-				{
-					textoArchivo += '\r\n' + context.marshal_as<String^>(newNodo->actividad->fecha) + ';' + "AC" + ';' + context.marshal_as<String^>(newNodo->actividad->startHour) +
-						';' + context.marshal_as<String^>(newNodo->actividad->endHour) + ';' + context.marshal_as<String^>(newNodo->actividad->meetingPlace) + ';' +
-						context.marshal_as<String^>(newNodo->actividad->involvedPeople) + ';' + context.marshal_as<String^>(newNodo->actividad->neededMaterials) + ';' +
-						context.marshal_as<String^>(newNodo->actividad->description) + ';' + context.marshal_as<String^>(newNodo->actividad->identifier) + ';' +
-						context.marshal_as<String^>(newNodo->actividad->priority);
-				}
-			}
-			else if (newNodo->recordatorio->pnum != -1)
-			{
-				if (cont == 0)
-				{
-					textoArchivo += context.marshal_as<String^>(newNodo->recordatorio->fecha) + ';' + "RE" + ';' + context.marshal_as<String^>(newNodo->recordatorio->startHour) +
-						';' + context.marshal_as<String^>(newNodo->recordatorio->description) + ';' + context.marshal_as<String^>(newNodo->recordatorio->identifier) + ';' +
-						context.marshal_as<String^>(newNodo->recordatorio->priority);
-					cont++;
-				}
-				else
-				{
-					textoArchivo += '\r\n' + context.marshal_as<String^>(newNodo->recordatorio->fecha) + ';' + "RE" + ';' + context.marshal_as<String^>(newNodo->recordatorio->startHour) +
-						';' + context.marshal_as<String^>(newNodo->recordatorio->description) + ';' + context.marshal_as<String^>(newNodo->recordatorio->identifier) + ';' +
-						context.marshal_as<String^>(newNodo->recordatorio->priority);
-					cont++;
-				}
-			}
-			else
-			{
-				if (cont == 0)
-				{
-					textoArchivo += context.marshal_as<String^>(newNodo->recordatorio->fecha) + ';' + "AL" + ';' + context.marshal_as<String^>(newNodo->recordatorio->startHour) +
-						';' + context.marshal_as<String^>(newNodo->recordatorio->description) + ';' + context.marshal_as<String^>(newNodo->recordatorio->identifier) + ';' +
-						context.marshal_as<String^>(newNodo->recordatorio->priority);
-					cont++;
-				}
-				else
-				{
-					textoArchivo += '\r\n' + context.marshal_as<String^>(newNodo->recordatorio->fecha) + ';' + "AL" + ';' + context.marshal_as<String^>(newNodo->recordatorio->startHour) +
-						';' + context.marshal_as<String^>(newNodo->recordatorio->description) + ';' + context.marshal_as<String^>(newNodo->recordatorio->identifier) + ';' +
-						context.marshal_as<String^>(newNodo->recordatorio->priority);
-					cont++;
-				}
-			}
-		}
-	}
+	//Función que se ejecuta al cerrar este form; se encarga de cerrar la aplicación y de guardar los datos guardados en la lista de eventos
+    //dentro del archivo asignado para el usuario.
 	private: System::Void btnCambiarCalendario_Click(System::Object^ sender, System::EventArgs^ e) {
 		try
 		{
@@ -446,10 +389,12 @@ namespace Proyecto2PrograAvanzada {
 			System::Windows::Forms::MessageBox::Show("Por favor ingrese datos válidos en el año y el mes");
 		}
 	}
+	//Función que desplaza el calendario hacia el año y mes señalados por el usuario en los textbox asignados.
 	private: System::Void btnAgregarTarea_Click(System::Object^ sender, System::EventArgs^ e) {
 		agregarEvento = gcnew AgregarEvento(System::Convert::ToString(mCalendar->SelectionRange->Start));
 		agregarEvento->Show();
 	}
+	//Función que abre un form para agregar un evento
 	private: System::Void txtCBuscarWatermark_TextChanged(System::Object^ sender, System::EventArgs^ e) {
 		txtCBuscar->Text = txtCBuscarWatermark->Text->Substring(0, 1);
 		txtCBuscarWatermark->Visible = false;
@@ -476,6 +421,7 @@ namespace Proyecto2PrograAvanzada {
 			txtCBuscarWatermark->Enabled = true;
 		}
 	}
+	//Funciones pensadas para funcionalidad de buscar tarea a través de ID, fecha, o palabras en la descripción.
 	private: System::Void mCalendar_DateSelected(System::Object^ sender, System::Windows::Forms::DateRangeEventArgs^ e) {
 		String^ fecha = System::Convert::ToString(mCalendar->SelectionRange->Start);
 		if (fecha->Length == 19)
@@ -523,6 +469,7 @@ namespace Proyecto2PrograAvanzada {
 		}
 		rtbEventos->Text = texto;
 	}
+	//Función que actualiza el richTextBox de los eventos de acuerdo con las tareas que tengan la fecha del día seleccionada con base en la lista.
 	private: System::Void Agenda_Load(System::Object^ sender, System::EventArgs^ e) {
 		fechahoy = fechahoy->Now;
 		timer1->Start();
@@ -626,6 +573,7 @@ namespace Proyecto2PrograAvanzada {
 			}
 		}
 	}
+	//Función que carga eventos a la lista desde el archivo .csv de cada usuario, para poder utilizar la lista posteriormente.
 	private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
 		MessageAlarma^ malarma;
 		String^ fecha = System::Convert::ToString(mCalendar->SelectionRange->Start);
@@ -702,5 +650,6 @@ namespace Proyecto2PrograAvanzada {
 			nAux = nAux->siguienteNodo;
 		}
 	}
-};
+	//Función que compara cada minuto con las fechas y horas de los diferentes eventos para mostrar los recordatorios pertinentes en cada caso.
+	};
 }

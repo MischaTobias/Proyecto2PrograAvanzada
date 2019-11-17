@@ -7,6 +7,7 @@ using namespace System;
 class NodoEvento
 {
 public:
+	//Creación de diferentes constructores polimorfos para adaptar la creación de nodos a los diferentes tipos de evento manejado.
 	NodoEvento(Actividad* act);
 	NodoEvento(Recordatorio* rec);
 	NodoEvento(Alarma* alarm);
@@ -16,4 +17,5 @@ public:
 	Recordatorio* recordatorio;
 	Alarma* alarma;
 	int Priority();
+	//Declaración de variables y método Priority() que devuelve la prioridad del evento guardado en este nodo.
 };

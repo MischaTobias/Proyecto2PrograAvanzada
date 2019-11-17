@@ -13,7 +13,7 @@ namespace Proyecto2PrograAvanzada {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-	extern ListaEventos* lEventos;
+	extern ListaEventos* lEventos;//Declaración de variable externa, no pertenece a esta clase pero se pueden manejar sus datos.
 
 	/// <summary>
 	/// Resumen de MessageAlarma
@@ -39,7 +39,7 @@ namespace Proyecto2PrograAvanzada {
 			this->alarma = alarma;
 			Cambiarlbl();
 		}
-
+		//Constructor que asigna variables y cambia el valor de una label.
 	protected:
 		/// <summary>
 		/// Limpiar los recursos que se estén usando.
@@ -206,6 +206,7 @@ namespace Proyecto2PrograAvanzada {
 			btnPostponer->Enabled = false;
 		}
 	}
+		   //Funcionamiento visual
 	private: System::Void btnPostponer_Click(System::Object^ sender, System::EventArgs^ e) {
 		String^ hora = "";
 		array<String^>^ horaymin;
@@ -274,6 +275,7 @@ namespace Proyecto2PrograAvanzada {
 		CambiarHora(horafinal);
 		this->Close();
 	}
+		   //Dependiendo del selectedIndex del combo box de minutos, se aplaza el evento una cierta cantidad de minutos.
 	private: System::Void CambiarHora(std::string hora) {
 		if (alarma)
 		{
@@ -284,9 +286,11 @@ namespace Proyecto2PrograAvanzada {
 			nodo->recordatorio->startHour = hora;
 		}
 	}
+		   //Con base en un string, cambia la fecha del nodo que ha sido enviado como parámetro de la creación del form.
 	private: System::Void btnDescartar_Click(System::Object^ sender, System::EventArgs^ e) {
 		this->Close();
 	}
+		   //Procedimiento que cierra este form
 	private: System::Void Cambiarlbl() {
 		msclr::interop::marshal_context context;
 		String^ texto = "";
@@ -308,5 +312,6 @@ namespace Proyecto2PrograAvanzada {
 		}
 		lblEvento->Text = texto;
 	}
+		   //Procedimiento que cambia el texto de un label con base en los datos del nodo enviado para la creación de este form.
 	};
 }

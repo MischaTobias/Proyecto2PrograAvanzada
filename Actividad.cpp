@@ -3,7 +3,7 @@
 Actividad::Actividad() {
 	priority = "N";
 	pnum = -1;
-}
+}//Constructor que cambia las variables para representar que el objeto está "vacío"
 
 Actividad::Actividad(std::string date, std::string shour, std::string ehour, std::string mplace, std::string ipeople,
 	std::string nmaterials, std::string desc, std::string id, std::string priority, int pnum) {
@@ -17,8 +17,4 @@ Actividad::Actividad(std::string date, std::string shour, std::string ehour, std
 	identifier = id;
 	this->priority = priority;
 	this->pnum = pnum;
-}
-
-void Actividad::ItsTime() {
-
-}
+}//Constructor que asigna diferentes valores a las variables locales y las heredadas.
